@@ -9,19 +9,23 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { ConfigurationMicroService } from './shared/configuration-micro.service';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { FxroomComponent } from './fxroom/fxroom.component';
 
 
 //Route Paths
 const routes: Routes = [
   { path: '', redirectTo: 'feedback', pathMatch: 'full' },
   { path: 'feedback', component: FeedbackComponent },
+  { path: 'fxroom', component: FxroomComponent },
+  
   { path: '**', redirectTo: 'feedback' }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    FxroomComponent
   ],
   imports: [
     BrowserModule,

@@ -153,3 +153,26 @@ button.star i.active {
 .error {
     color: #ff0000
 }
+
+.tab-container {
+    border-bottom: 1px solid;
+    width: 350px;
+    margin-left: -15px;
+    padding-bottom: 10px;
+}
+
+div.tab-container a {
+    padding: 6px;
+    text-decoration: none;
+    margin-left: 20px;
+    color: #333;
+}
+
+div.tab-container a.active {
+    border-bottom: 4px solid #666666;
+}
+
+hr {
+    margin-left: -15px;
+    width: 350px;
+}

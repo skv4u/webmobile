@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
 import { CommonService } from './../shared/common.service'
 
 
@@ -10,9 +12,7 @@ import { CommonService } from './../shared/common.service'
   
 })
 export class FeedbackComponent implements OnInit {
-
-  ngOnInit() {
-  }
+ 
   totalRating: number[] = [1, 2, 3, 4, 5];
   currentRating: number = 0;
   tempRating: number = 0;
@@ -22,24 +22,23 @@ export class FeedbackComponent implements OnInit {
   error: boolean = false;
   isProcessing: boolean = false;
   pageNotFound: boolean = false;
-  /*hotelData:any = {
-    "FullName":"CROWN PROMENADE HOTEL Bangalore",
-    "Name": "Crown Promenade",
-    "Logo": "https://fortunecloud.blob.core.windows.net/document/0742c708-3ecb-48da-8470-48b23bb9715e.png"
-  }*/
+  
   hotelData: any = {
     "FullName": "",
     "Name": "",
     "Logo": ""
   }
   queryData: any = {};
-  constructor(public commonService: CommonService) {
+  constructor(private _title: Title,public commonService: CommonService) {
     this.queryData = this.queryParam(window.top.location.href);
     if (this.queryData)
       this.listHotelData();
     else
       this.pageNotFound = true;
 
+  }
+  ngOnInit() {
+    this._title.setTitle("Customer Feedback");
   }
   listHotelData() {
     this.isProcessing = true;
