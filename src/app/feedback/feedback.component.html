@@ -1,0 +1,55 @@
+<div class="container" *ngIf="pageNotFound">
+    <div class="card center">
+        <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+        <p>404 - Page not found</p>
+    </div>
+</div>
+<div class="container" *ngIf="!pageNotFound">
+
+    <div class="header">
+        <div class="box1 center">
+            <img *ngIf="hotelData.Logo" [src]="hotelData.Logo">
+            <i *ngIf="!hotelData.Logo" class="fas fa-hotel" style="font-size: 50px; color: #d9d9d9;"></i>
+
+
+        </div>
+        <div class="divider"></div>
+        <div class="box2">{{hotelData.FullName}}</div>
+
+    </div>
+    <div class="card" *ngIf="isProcessing">
+        <i class="fas fa-spinner fa-spin" style="font-size: 32px;text-align: center;display: block;"></i>
+
+    </div>
+    <div class="card" *ngIf="isCreateVisible">
+        <div class="card-top center top20">How was your stay at <strong>{{hotelData.Name}}</strong></div>
+        <div class="card-rate center top20"> Rating </div>
+        <div class="center top20">
+
+            <button class="star" *ngFor="let m of totalRating" (click)="updateRating(m)" (mouseover)="updateTempRating(m)" (mouseout)="updateActual()">
+              <i class="fas fa-star {{currentRating >= m  || tempRating >= m ? 'active':''}}"></i>
+          </button>
+            <div class="error" *ngIf="error && !isRated">Please provide rating</div>
+
+
+        </div>
+        <div class="card-rate center top20">Feedback</div>
+        <div class="feedback top20">
+            <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback"></textarea>
+        </div>
+
+    </div>
+    <div class="button top20" *ngIf="isCreateVisible">
+        <button (click)="saveRating()">Submit</button>
+    </div>
+    <div class="card center" *ngIf="!isCreateVisible">
+        <p>&nbsp;</p>
+        <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
+        <img src="./assets/images/success.png">
+
+        <p class="success-msg">Feedback Send Successfully</p>
+        <p>&nbsp;</p>
+
+    </div>
+
+</div>

@@ -1,1 +1,155 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+    background: #ffffff;
+    font-size: 14px;
+    font-family: Roboto-Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #555555
+}
+
+.container {
+    margin: 0 auto;
+    width: 370px;
+    border: 1px solid #f3f3f3;
+    background-color: #f3f3f3;
+    padding: 0;
+    height: 100vh;
+}
+
+.header {
+    background-color: #ffffff;
+    box-shadow: 0 0 0.1px rgba(0, 0, 0, 0.1)
+}
+
+.header div.box1,
+.header div.box2,
+.header div.divider {
+    display: inline-block;
+    padding: 12px;
+    vertical-align: middle;
+    /* border: 1px solid */
+}
+
+.header div.box1 {
+    width: 25%;
+}
+
+.header div.box1 img {
+    width: 95px;
+    height: 55px;
+}
+
+.header div.box2 {
+    width: 60%;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+}
+
+.header div.divider {
+    width: 0px;
+    border: 0.6px solid #c3c1c1;
+    padding: 0;
+    display: inline;
+    height: 45px;
+    position: absolute;
+    top: 17px;
+}
+
+.card {
+    padding: 15px;
+    margin: 10px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+    border-radius: 4px;
+}
+
+.button button {
+    background-color: #4cc400;
+    width: 100%;
+    padding: 12px;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.center {
+    text-align: center
+}
+
+div.card-rate {
+    padding: 15px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+div.card-rate::before {
+    content: " ";
+    width: 20px;
+    position: relative;
+    left: -5px;
+    border: 1px solid #999999;
+    display: inline-block;
+    height: 0px;
+    padding: 0;
+    margin: 0;
+    top: -3px;
+}
+
+div.card-rate::after {
+    content: " ";
+    width: 20px;
+    position: relative;
+    left: 5px;
+    border: 1px solid #999999;
+    display: inline-block;
+    height: 0px;
+    padding: 0;
+    margin: 0;
+    top: -3px;
+}
+
+.button {
+    position: absolute;
+    bottom: 3px;
+    display: block;
+    width: 370px;
+}
+
+button.star {
+    margin: 0;
+    background-color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-size: 30px;
+    outline: 0;
+    color: #d9d9d9
+}
+
+button.star i.active {
+    color: #fac917
+}
+
+.feedback textarea {
+    border: 0;
+    border-bottom: 1px solid #999999;
+    width: 100%;
+    font-family: Roboto-Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
+    resize: vertical;
+    outline: 0;
+    padding: 0px 0px 10px 1px
+}
+
+.top20 {
+    margin-top: 20px;
+}
+
+.success-msg {
+    font-size: 18px;
+    color: #555;
+}
+
+.error {
+    color: #ff0000
+}
