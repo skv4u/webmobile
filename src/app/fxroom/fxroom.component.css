@@ -61,5 +61,66 @@
 }
 
 .checkbox {
-    padding: 0px 0px 20px 0px;
+    padding: 0px 0px 17px 0px;
+}
+
+.tab-container a {
+    cursor: pointer;
+}
+
+.offer-image img {
+    height: 128px;
+    width: 100%;
+}
+
+.image-right,
+.image-right-text {
+    position: absolute;
+    /* margin-left: 224px; */
+    /* border: 1px solid; */
+    padding: 15px;
+    height: 97px;
+    width: 65px;
+    z-index: 1001;
+    /* margin-top: 15px; */
+}
+
+.image-right {
+    background-color: #000000;
+    opacity: 0.2;
+}
+
+.image-right-text {
+    color: #fff;
+    margin-top: 10px;
+}
+
+.image-right-text span {
+    color: #e3d002;
+    font-size: 35px;
+}
+
+.image-bottom {
+    background: #2e2c29;
+    position: relative;
+    color: #fff;
+    padding: 5px;
+    width: 98.5%;
+    top: -5px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 600px) {
+    .offer-image img {
+        height: 128px;
+        width: 320px;
+    }
+    .image-bottom {
+        width: 310px;
+    }
 }

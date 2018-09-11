@@ -13,10 +13,10 @@ export class CommonService {
     "Config": this._config.getConfigUrl() + '/v1/configuration',
     "Report": this._config.getReportUrl() + 'v1/report',
     "Admin": this._config.getAdminUrl() + '/v1/configuration',
-    "Operation": this._config.getOperationUrl() + '/V1.0.0'
+    "Operation": this._config.getOperationUrl() + '/V1.0.0',
+    "Datahub": this._config.getDataHubMasterUrl() + '/api/fx/service/masterservices'
   }
-  constructor(private http: Http, 
-    
+  constructor(private http: Http,
     private _config: ConfigurationMicroService) { }
 
  // method post

@@ -10,7 +10,7 @@ body {
 
 .container {
     margin: 0 auto;
-    width: 370px;
+    width: 50%;
     border: 1px solid #f3f3f3;
     background-color: #f3f3f3;
     padding: 0;
@@ -114,7 +114,7 @@ div.card-rate::after {
     position: absolute;
     bottom: 3px;
     display: block;
-    width: 370px;
+    width: 50%;
 }
 
 button.star {
@@ -156,7 +156,7 @@ button.star i.active {
 
 .tab-container {
     border-bottom: 1px solid;
-    width: 350px;
+    /* width: 350px; */
     margin-left: -15px;
     padding-bottom: 10px;
 }
@@ -172,7 +172,25 @@ div.tab-container a.active {
     border-bottom: 4px solid #666666;
 }
 
+div.tab-container-value.request-service {
+    overflow: auto;
+    height: 59vh;
+    margin-top: 2px;
+}
+
 hr {
     margin-left: -15px;
     width: 350px;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 370px;
+    }
+    .button {
+        width: 370px
+    }
+    .tab-container {
+        width: 350px;
+    }
 }

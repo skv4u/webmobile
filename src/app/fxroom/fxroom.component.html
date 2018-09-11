@@ -26,32 +26,65 @@
     </div>
     <div class="card" *ngIf="isCreateVisible">
         <div class="tab-container">
-            <a href="#" class="active">Service Request</a>
+            <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
+            <!-- <a href="#" class="active">Service Request</a>
             <a href="#">Feedback</a>
-            <a href="#">Offers</a>
+            <a href="#">Offers</a> -->
         </div>
-        <div class="card-rate center"> Housekeeping </div>
-        <hr />
+        <div class="tab-container-value request-service" *ngIf="currentTab=='ServiceRequest'">
+            <div *ngFor="let m of serviceList">
+                <div class="card-rate center"> {{m.departmentName}} </div>
+                <!-- <hr /> -->
+                <div class="list">
+                    <div class="checkbox" *ngFor="let rq of m.requests">
+                        <label>
+                            <input type="checkbox" value="">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            {{rq.requestName}}
+                        </label>
+                    </div>
 
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="" checked>
-                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                Need Extra Pillow
-            </label>
+
+                </div>
+
+            </div>
+            <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
+                <button (click)="saveRating()">Submit</button>
+            </div>
         </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="" checked>
-                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                Need Extra Pillow
-            </label>
+        <div class="tab-container-value" *ngIf="currentTab=='Feedback'">
+            <div class="card-rate center"> Send us your Feedback </div>
+            <div class="feedback top20">
+                <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback"></textarea>
+            </div>
+            <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
+                <button (click)="saveRating()">Submit</button>
+            </div>
         </div>
+
+        <div class="tab-container-value" *ngIf="currentTab=='Offers'">
+            <div class="card-rate center">Vedic Rejuvenation Offer</div>
+            <div class="image-right"></div>
+            <div class="image-right-text">
+                <span>35%</span> off on Spa</div>
+            <div class="offer-image">
+                <img src="http://productsdev.idsnext.com/feedback/assets/images/spa.jpg">
+            </div>
+
+            <div class="image-bottom">
+                Get Flat 35% off on all Spa treatments
+            </div>
+            <div class="image-description font12">
+                We would like to offer you an opportunity to experience this at our very own Antara Ayur Spa.
+            </div>
+        </div>
+
+
 
     </div>
-    <div class="button top20" *ngIf="isCreateVisible">
+    <!-- <div class="button top20" *ngIf="isCreateVisible">
         <button (click)="saveRating()">Submit</button>
-    </div>
+    </div> -->
     <div class="card center" *ngIf="!isCreateVisible">
         <p>&nbsp;</p>
         <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
