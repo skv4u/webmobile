@@ -24,7 +24,7 @@
     <div class="card" *ngIf="isCreateVisible">
         <div class="card-top center"><strong>Room# 104,</strong> 1st Floor - Deluxe Room</div>
     </div>
-    <div class="card" *ngIf="isCreateVisible">
+    <div class="card" *ngIf="isCreateVisible" (swiperight)="loadTab('right')" (swipeleft)="loadTab('left')">
         <div class="tab-container">
             <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
             <!-- <a href="#" class="active">Service Request</a>
@@ -38,7 +38,7 @@
                 <div class="list">
                     <div class="checkbox" *ngFor="let rq of m.requests">
                         <label>
-                            <input type="checkbox" value="">
+                            <input type="checkbox" [(ngModel)]="rq.IsChecked">
                             <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                             {{rq.requestName}}
                         </label>
@@ -49,7 +49,7 @@
 
             </div>
             <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
-                <button (click)="saveRating()">Submit</button>
+                <button (click)="saveServiceRequest()">Submit</button>
             </div>
         </div>
         <div class="tab-container-value" *ngIf="currentTab=='Feedback'">
@@ -58,7 +58,7 @@
                 <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback"></textarea>
             </div>
             <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
-                <button (click)="saveRating()">Submit</button>
+                <button (click)="saveFeedback()">Submit</button>
             </div>
         </div>
 
@@ -86,13 +86,24 @@
         <button (click)="saveRating()">Submit</button>
     </div> -->
     <div class="card center" *ngIf="!isCreateVisible">
-        <p>&nbsp;</p>
-        <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
-        <img src="./assets/images/success.png">
+        <div *ngIf="saveSuccess">
+            <p>&nbsp;</p>
+            <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
+            <img src="./assets/images/success.png">
 
-        <p class="success-msg">Feedback Send Successfully</p>
-        <p>&nbsp;</p>
+            <p class="success-msg">{{responseMessage}}</p>
+            <p>&nbsp;</p>
+        </div>
+        <div *ngIf="!saveSuccess">
+            <p>&nbsp;</p>
+            <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
+            <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+
+            <p class="success-msg">{{responseMessage}}</p>
+            <p>&nbsp;</p>
+        </div>
 
     </div>
 
 </div>
+<app-popupbox *ngIf="popupVisibility" (back)="popupVisibility=false; viewTabDetail('Feedback',1);"></app-popupbox>

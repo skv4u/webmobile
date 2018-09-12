@@ -11,7 +11,9 @@ import { ConfigurationMicroService } from './shared/configuration-micro.service'
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FxroomComponent } from './fxroom/fxroom.component';
 
-
+import 'hammerjs';
+import 'hammer-timejs';
+import { PopupboxComponent } from './popupbox/popupbox.component';
 //Route Paths
 const routes: Routes = [
   { path: '', redirectTo: 'feedback', pathMatch: 'full' },
@@ -25,7 +27,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     FeedbackComponent,
-    FxroomComponent
+    FxroomComponent,
+    PopupboxComponent
   ],
   imports: [
     BrowserModule,
