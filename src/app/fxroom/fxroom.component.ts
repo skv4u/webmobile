@@ -17,6 +17,13 @@ export class FxroomComponent implements OnInit {
   isProcessing: boolean = false;
   pageNotFound: boolean = false;
   currentTab: string = "ServiceRequest";
+  selectedDepartment: string = "Select Department";
+
+  totalRating: number[] = [1, 2, 3, 4, 5];
+  currentRating: number = 0;
+  tempRating: number = 0;
+  feedback: string = "";
+  isRated: boolean = false;
   tabs: any = [{
     "tabName": "Service Request",
     "tabKey": "ServiceRequest",
@@ -40,16 +47,22 @@ export class FxroomComponent implements OnInit {
   };
   queryData: any = {};
   serviceList: any;
-  saveSuccess:boolean = false;
-  responseMessage:string = "";
-  popupVisibility:boolean =false;
-
+  departmentList: any[] = [];
+  offerList: any[] = [];
+  saveSuccess: boolean = false;
+  responseMessage: string = "";
+  popupVisibility: boolean = false;
+  popuptype: number = 1;
+  roomData: any = {};
   constructor(private _title: Title, public commonService: CommonService) {
     this.queryData = this.queryParam(window.top.location.href);
     if (this.queryData)
       this.listHotelData((sucess) => {
         if (sucess) {
           this.listServices();
+          this.listHotelDepartment();
+          this.listHotelOffers();
+          this.listRoom();
         }
       });
     else
@@ -98,6 +111,53 @@ export class FxroomComponent implements OnInit {
       }
     )
   }
+  listHotelDepartment() {
+    this.isProcessing = true;
+    this.departmentList = [];
+    this.commonService.GetMethod("department/property/" + this.queryData.p + '/Active', "Config").subscribe(
+      data => {
+        if (data && data.Data.length) {
+          this.departmentList = data.Data;
+        }
+        this.isProcessing = false;
+      }
+    );
+  }
+  listHotelOffers() {
+    // https://fortuneclouddevapi.azurewebsites.net/v1/configuration/offer/get-filtered-record/Property/20002/Active
+    this.isProcessing = true;
+    this.offerList = [];
+    let jsonData = {
+      "SelectionMode": "Property",
+      "SelectionCode": this.queryData.p,
+      "IsActive": "Active"
+    }
+    this.commonService.PostMethod("offer/get-current-offer", jsonData, "Config").subscribe(
+      data => {
+        if (data && data.Data.length) {
+          this.offerList = data.Data;
+        }
+        this.isProcessing = false;
+      },
+      error => {
+
+      }
+    );
+  }
+  listRoom() {
+    this.isProcessing = true;
+    this.departmentList = [];
+    this.commonService.GetMethod("room/" + this.queryData.r, "Config").subscribe(
+      data => {
+        // console.log(data);
+        if (data && data.Data) {
+          this.roomData = data.Data;
+        }
+        // console.log(this.roomData);
+        this.isProcessing = false;
+      }
+    );
+  }
   queryParam(myvar) {
     let urls = myvar;
     let myurls = urls.split("?");
@@ -116,6 +176,16 @@ export class FxroomComponent implements OnInit {
     this.currentTab = key;
     this._title.setTitle('FX-Service : ' + this.tabs[index].tabName);
   }
+  backtoNextPage() {
+    this.popupVisibility = false;
+    if (this.popuptype == 2) {
+      this.viewTabDetail('Offers', 2);
+    }
+    else {
+      this.viewTabDetail('Feedback', 1);
+    }
+
+  }
 
   saveServiceRequest() {
     // this.saveSuccess =false;
@@ -126,24 +196,23 @@ export class FxroomComponent implements OnInit {
     //   return
     // }
     // console.log(this.serviceList);
-    this.popupVisibility = true;
-      if(1){
-      return
-    }
+    //   if(1){
+    //   return
+    // }
     let serviceRequest: any[] = [];
     for (let m of this.serviceList) {
       for (let rq of m.requests) {
-        if(rq.IsChecked){
-        serviceRequest.push({
-          "departmentCode": m.departmentCode,
-          "request": rq.requestName,
-          "requestCode": rq.requestCode
-        });
-      }
+        if (rq.IsChecked) {
+          serviceRequest.push({
+            "departmentCode": m.departmentCode,
+            "request": rq.requestName,
+            "requestCode": rq.requestCode
+          });
+        }
       }
     }
     let json = {
-      "createdByName": "Prabu",
+      "createdByName": this.queryData.e,
       "hotelCode": this.queryData.p,
       "isRequestRelatedToRoom": true,
       "isRequestedbyGuest": true,
@@ -154,14 +223,18 @@ export class FxroomComponent implements OnInit {
     this.isProcessing = true;
     this.commonService.PostMethod("servicetransactions/savewithflrinfo", json, "Datahub").subscribe(
       data => {
-        console.log(data);
-        this.saveSuccess =true;
-        this.isCreateVisible = false;
+        // console.log(data);
+        // this.saveSuccess =true;
+        // this.isCreateVisible = false;
+        // this.responseMessage = "Request Sent Successfully ";
+        this.popuptype = 1;
         this.isProcessing = false;
-        this.responseMessage = "Request Sent Successfully ";
+
+        this.popupVisibility = true;
+
       },
-      error =>{
-        this.saveSuccess =false;
+      error => {
+        this.saveSuccess = false;
         this.isCreateVisible = false;
         this.isProcessing = false;
         this.responseMessage = "Oops!!! Invalid room number";
@@ -185,28 +258,85 @@ export class FxroomComponent implements OnInit {
     "tabKey": "Offers",
     "IsActive": false
   }];*/
-  loadTab(type:string){
-    if(type == 'left'){
-      if(this.currentTab == 'Offers') return;
-      if(this.currentTab == 'ServiceRequest'){
-        // this.currentTab = 'Feedback';
-        this.viewTabDetail('Feedback',1);
-      }else if( this.currentTab == 'Feedback'){
-        // this.currentTab = 'Offers';
-        this.viewTabDetail('Offers',2);
+  loadTab(type: string) {
+    if (type == 'left') {
+      if (this.currentTab == 'Offers') return;
+      if (this.currentTab == 'ServiceRequest') {
+
+        this.viewTabDetail('Feedback', 1);
+      } else if (this.currentTab == 'Feedback') {
+
+        this.viewTabDetail('Offers', 2);
       }
     }
     else {
-      if(this.currentTab == 'ServiceRequest') return;
-      if(this.currentTab == 'Offers'){
-        // this.currentTab = 'Feedback';
-        this.viewTabDetail('Feedback',1);
-        
-      }else if( this.currentTab == 'Feedback'){
-        // this.currentTab = 'ServiceRequest';
-        this.viewTabDetail('ServiceRequest',0);
+      if (this.currentTab == 'ServiceRequest') return;
+      if (this.currentTab == 'Offers') {
+        this.viewTabDetail('Feedback', 1);
+
+      } else if (this.currentTab == 'Feedback') {
+        this.viewTabDetail('ServiceRequest', 0);
       }
     }
   }
+
+
+  updateRating(rating) {
+    if (this.currentRating == rating) {
+      this.isRated = false;
+      this.currentRating = 0;
+      return
+    }
+    this.currentRating = rating;
+    this.isRated = true;
+
+  }
+  updateTempRating(m) {
+    this.tempRating = m
+  }
+  updateActual() {
+    this.tempRating = this.currentRating;
+  }
+  saveFeedback() {
+    if (!this.isRated) {
+      this.error = true;
+      return;
+    }
+    this.isProcessing = true;
+
+
+    let serverJson = {
+      "PmsCustCode": this.queryData.p,
+      "GuestCode": this.queryData.g,
+      "FeedbackRating": this.currentRating,
+      "FeedbackText": this.feedback,
+      "DepartmentCode": this.selectedDepartment,
+      "DepartmentName": this.departmentNameByCode(this.selectedDepartment),
+      "RoomNumber": this.queryData.r
+
+    }
+
+    this.isProcessing = true;
+    this.commonService.PostMethod("Guest/GuestFeedback/", serverJson).subscribe(
+      data => {
+        // this.isCreateVisible = false;
+        // this.isProcessing = false;
+        this.isProcessing = false;
+        this.popuptype = 2;
+        this.responseMessage = "Feedback Sent Successfully ";
+        this.popupVisibility = true;
+      }
+    );
+
+  }
+  departmentNameByCode(Code) {
+    for (let m of this.departmentList) {
+      if (m.DepartmentCode == Code) {
+        return m.DepartmentName;
+      }
+    }
+    return '';
+  }
+
 
 }

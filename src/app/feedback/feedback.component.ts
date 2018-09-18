@@ -68,6 +68,12 @@ export class FeedbackComponent implements OnInit {
   }
 
   updateRating(rating) {
+    // console.log(rating,this.currentRating);
+    if(this.currentRating == rating){
+      this.isRated = false;
+      this.currentRating = 0;
+      return
+    }
     this.currentRating = rating;
     this.isRated = true;
 
@@ -85,13 +91,18 @@ export class FeedbackComponent implements OnInit {
       return;
     }
     this.isProcessing = true;
+
     let serverJson = {
       "PmsCustCode": this.queryData.p,
       "GuestCode": this.queryData.g,
       "FeedbackRating": this.currentRating,
-      "FeedbackText": this.feedback
+      "FeedbackText": this.feedback,
+      "DepartmentCode":"",
+      "DepartmentName": "",
+      "RoomNumber":""
+      
     }
-    // "ReservationNumber": this.queryData.r,
+ 
     this.isProcessing = true;
     this.commonService.PostMethod("Guest/GuestFeedback/", serverJson).subscribe(
       data => {

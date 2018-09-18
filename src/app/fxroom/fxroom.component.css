@@ -115,6 +115,10 @@
     font-size: 12px;
 }
 
+.font13 {
+    font-size: 13px;
+}
+
 @media only screen and (max-width: 600px) {
     .offer-image img {
         height: 128px;
@@ -123,4 +127,16 @@
     .image-bottom {
         width: 310px;
     }
+}
+
+select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #999999;
+    color: #666666;
+}
+
+.image-description {
+    margin-top: 7px;
 }

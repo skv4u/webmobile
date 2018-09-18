@@ -12,7 +12,7 @@ export class PopupboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.message = 'Request send success'
+    // this.message = 'Request send success'
   }
 
   backParent(){

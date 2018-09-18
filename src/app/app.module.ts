@@ -32,7 +32,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, { useHash: false }),
+    RouterModule.forRoot(routes, { useHash: true }),
     FormsModule,
     HttpModule
   ],

@@ -22,7 +22,7 @@
 
     </div>
     <div class="card" *ngIf="isCreateVisible">
-        <div class="card-top center"><strong>Room# 104,</strong> 1st Floor - Deluxe Room</div>
+        <div class="card-top center"><strong>Room# {{roomData.RoomNumber}},</strong> {{roomData.FloorName}} - {{roomData.RoomTypeName}}</div>
     </div>
     <div class="card" *ngIf="isCreateVisible" (swiperight)="loadTab('right')" (swipeleft)="loadTab('left')">
         <div class="tab-container">
@@ -55,29 +55,49 @@
         <div class="tab-container-value" *ngIf="currentTab=='Feedback'">
             <div class="card-rate center"> Send us your Feedback </div>
             <div class="feedback top20">
+                <select [(ngModel)]="selectedDepartment">
+                    <option>Select Department</option>
+                    <option *ngFor="let d of departmentList" [value]="d.DepartmentCode">{{d.DepartmentName}}</option>
+                </select>
+            </div>
+            <div class="card-rate center"> Rating </div>
+            <div class="center">
+                <button class="star" *ngFor="let m of totalRating" (click)="updateRating(m)" (mouseover)="updateTempRating(m)" (mouseout)="updateActual()">
+                  <i class="fas fa-star {{currentRating >= m  || tempRating >= m ? 'active':''}}"></i>
+              </button>
+                <div class="error" *ngIf="error && !isRated">Please provide rating</div>
+            </div>
+
+            <div class="feedback top20">
                 <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback"></textarea>
             </div>
             <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
                 <button (click)="saveFeedback()">Submit</button>
             </div>
         </div>
-
+        <!-- Offers Start here -->
         <div class="tab-container-value" *ngIf="currentTab=='Offers'">
-            <div class="card-rate center">Vedic Rejuvenation Offer</div>
-            <div class="image-right"></div>
-            <div class="image-right-text">
-                <span>35%</span> off on Spa</div>
-            <div class="offer-image">
-                <img src="http://productsdev.idsnext.com/feedback/assets/images/spa.jpg">
-            </div>
+            <div *ngFor="let offer of offerList">
+                <div class="card-rate center">{{offer.OfferName}}</div>
+                <!-- <div class="image-right"></div> -->
+                <!-- <div class="image-right-text">
+                <span>35%</span> off on Spa</div> -->
+                <div class="offer-image" *ngIf="!offer.FilePath">
+                    <img src="http://productsdev.idsnext.com/feedback/assets/images/nopic.jpg">
+                </div>
+                <div class="offer-image" *ngIf="offer.FilePath">
+                    <img [src]="offer.FilePath  ">
+                </div>
 
-            <div class="image-bottom">
-                Get Flat 35% off on all Spa treatments
-            </div>
-            <div class="image-description font12">
-                We would like to offer you an opportunity to experience this at our very own Antara Ayur Spa.
+                <!-- <div class="image-bottom">
+                    Get Flat 35% off on all Spa treatments
+                </div> -->
+                <div class="image-description font13">
+                    {{offer.OfferDescription}}
+                </div>
             </div>
         </div>
+        <!-- Offer ends here -->
 
 
 
@@ -88,7 +108,7 @@
     <div class="card center" *ngIf="!isCreateVisible">
         <div *ngIf="saveSuccess">
             <p>&nbsp;</p>
-            <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
+
             <img src="./assets/images/success.png">
 
             <p class="success-msg">{{responseMessage}}</p>
@@ -96,7 +116,7 @@
         </div>
         <div *ngIf="!saveSuccess">
             <p>&nbsp;</p>
-            <!-- <i class="far fa-check-circle" style="font-size: 42px; color: #0fc900;"></i> -->
+
             <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
 
             <p class="success-msg">{{responseMessage}}</p>
@@ -106,4 +126,4 @@
     </div>
 
 </div>
-<app-popupbox *ngIf="popupVisibility" (back)="popupVisibility=false; viewTabDetail('Feedback',1);"></app-popupbox>
+<app-popupbox *ngIf="popupVisibility" (back)="backtoNextPage()" [message]="responseMessage"></app-popupbox>
