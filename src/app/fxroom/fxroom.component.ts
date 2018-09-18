@@ -18,6 +18,9 @@ export class FxroomComponent implements OnInit {
   pageNotFound: boolean = false;
   currentTab: string = "ServiceRequest";
   selectedDepartment: string = "Select Department";
+  departmentError:boolean = false;
+  feedbackTextError:boolean = false;
+  
 
   totalRating: number[] = [1, 2, 3, 4, 5];
   currentRating: number = 0;
@@ -217,7 +220,7 @@ export class FxroomComponent implements OnInit {
       "isRequestRelatedToRoom": true,
       "isRequestedbyGuest": true,
       "loginUserId": this.queryData.e,
-      "roomNumber": this.queryData.r,
+      "roomNumber": this.roomData.RoomNumber,
       "serviceRequests": serviceRequest
     };
     this.isProcessing = true;
@@ -226,7 +229,7 @@ export class FxroomComponent implements OnInit {
         // console.log(data);
         // this.saveSuccess =true;
         // this.isCreateVisible = false;
-        // this.responseMessage = "Request Sent Successfully ";
+        this.responseMessage = "Request Sent Successfully ";
         this.popuptype = 1;
         this.isProcessing = false;
 
@@ -297,11 +300,29 @@ export class FxroomComponent implements OnInit {
   updateActual() {
     this.tempRating = this.currentRating;
   }
+  validateText(){
+    if(this.feedback.trim().length < 2){
+      this.feedbackTextError = true;
+    }
+    else {
+      this.feedbackTextError = false;
+    }
+  }
   saveFeedback() {
-    if (!this.isRated) {
-      this.error = true;
+    // console.log(this.selectedDepartment,typeof this.selectedDepartment);
+    if(this.selectedDepartment == 'Select Department'){
+      this.departmentError = true;
       return;
     }
+    if(this.feedback.trim().length < 2){
+      this.feedbackTextError = true;
+      return;
+    }
+    
+    // if (!this.isRated) {
+    //   this.error = true;
+    //   return;
+    // }
     this.isProcessing = true;
 
 
@@ -312,7 +333,7 @@ export class FxroomComponent implements OnInit {
       "FeedbackText": this.feedback,
       "DepartmentCode": this.selectedDepartment,
       "DepartmentName": this.departmentNameByCode(this.selectedDepartment),
-      "RoomNumber": this.queryData.r
+      "RoomNumber": this.roomData.RoomNumber
 
     }
 

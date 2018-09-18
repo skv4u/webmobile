@@ -6,7 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./popupbox.component.css']
 })
 export class PopupboxComponent implements OnInit {
-  @Input('message') message?:string;
+  @Input('message') message:string;
 @Output() back = new EventEmitter()
 
   constructor() { }

@@ -55,21 +55,23 @@
         <div class="tab-container-value" *ngIf="currentTab=='Feedback'">
             <div class="card-rate center"> Send us your Feedback </div>
             <div class="feedback top20">
-                <select [(ngModel)]="selectedDepartment">
+                <select [(ngModel)]="selectedDepartment" (change)="departmentError=false;">
                     <option>Select Department</option>
                     <option *ngFor="let d of departmentList" [value]="d.DepartmentCode">{{d.DepartmentName}}</option>
                 </select>
+                <div class="error font12" *ngIf="departmentError">Department is required</div>
             </div>
             <div class="card-rate center"> Rating </div>
             <div class="center">
                 <button class="star" *ngFor="let m of totalRating" (click)="updateRating(m)" (mouseover)="updateTempRating(m)" (mouseout)="updateActual()">
                   <i class="fas fa-star {{currentRating >= m  || tempRating >= m ? 'active':''}}"></i>
               </button>
-                <div class="error" *ngIf="error && !isRated">Please provide rating</div>
+                <div class="error" *ngIf="error && !isRated">Please Provide Rating</div>
             </div>
 
             <div class="feedback top20">
-                <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback"></textarea>
+                <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Feedback" (keyup)="validateText()"></textarea>
+                <div class="error font12" *ngIf="feedbackTextError">Minimum 2 Character is required</div>
             </div>
             <div class="button top20" style="margin-left: -25px;" *ngIf="isCreateVisible">
                 <button (click)="saveFeedback()">Submit</button>

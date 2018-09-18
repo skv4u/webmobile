@@ -28,12 +28,6 @@ export class ConfigurationMicroService {
       this.reportsUrl = "https://fcreportsapiqa.azurewebsites.net/";
       this.operationUrl = "https://fooperationsapiqa.azurewebsites.net";
       this.dataHubMaster = "https://datahubapi.idsnext.com";
-
-      this.configUrl = "https://fortunecloudapi.idsnext.com"; 
-      this.adminUrl = "https://productsadminapi.idsnext.com"; 
-      this.reportsUrl = "https://fcreportsapi.azurewebsites.net/"; 
-      this.operationUrl = "https://fooperationsapi.azurewebsites.net";
-      this.dataHubMaster = "https://datahubapi.idsnext.com";
       
     } else if (host == 'productsfat.idsnext.com') { // FAT
       this.configUrl = "https://fortunecloudfatapi.azurewebsites.net/"; 

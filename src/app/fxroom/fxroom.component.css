@@ -69,20 +69,16 @@
 }
 
 .offer-image img {
-    height: 128px;
     width: 100%;
 }
 
 .image-right,
 .image-right-text {
     position: absolute;
-    /* margin-left: 224px; */
-    /* border: 1px solid; */
     padding: 15px;
     height: 97px;
     width: 65px;
     z-index: 1001;
-    /* margin-top: 15px; */
 }
 
 .image-right {
