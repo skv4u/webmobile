@@ -1,0 +1,74 @@
+<!-- <div class="container" *ngIf="pageNotFound">
+    <div class="card center">
+        <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+        <p>404 - Page not found</p>
+    </div>
+</div> -->
+<div class="container">
+    <div class="header">
+        <div class="box1 center">
+            <img *ngIf="hotelData.Logo" [src]="hotelData.Logo">
+            <i *ngIf="!hotelData.Logo" class="fas fa-hotel" style="font-size: 50px; color: #d9d9d9;"></i>
+        </div>
+        <div class="divider"></div>
+        <div class="box2">{{hotelData.FullName}}</div>
+    </div>
+
+    <div class="card" *ngIf="isProcessing">
+        <i class="fas fa-spinner fa-spin" style="font-size: 32px;text-align: center;display: block;"></i>
+    </div>
+
+    <div class="card" *ngIf="isCreateVisible">
+        <table>
+            <tr>
+                <td>Room Type : <strong>{{roomData.RoomTypeName}}</strong></td>
+                <td>Room Count : <strong>1</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card" *ngIf="isCreateVisible">
+        <div class="card-rate center"> Expected Time of Arrival </div>
+        <div class="center"><input id="appt-time" type="time" name="appt-time" value="13:30"></div>
+        <div class="center">
+            <span class="border-bottom left"></span>
+            <span class="border-bottom right"></span>
+        </div>
+
+        <div class="card-rate center" style="padding:0"> Special Instruction </div>
+        <div class="feedback top20">
+            <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Special Instruction"></textarea>
+        </div>
+        <div class="font11">
+            <i class="fa fa-exclamation-circle"></i> Special requests cannot be guaranteed –but the property will try to meet your needs.
+        </div>
+
+    </div>
+
+    <div class="card" *ngIf="isCreateVisible">
+        <div class="card-rate center"> Select Room of Your Choice</div>
+        <app-custom-select-dropdown></app-custom-select-dropdown>
+    </div>
+
+
+    <div class="card center" *ngIf="!isCreateVisible">
+        <div *ngIf="saveSuccess">
+            <p>&nbsp;</p>
+
+            <img src="./assets/images/success.png">
+
+            <p class="success-msg">{{responseMessage}}</p>
+            <p>&nbsp;</p>
+        </div>
+        <div *ngIf="!saveSuccess">
+            <p>&nbsp;</p>
+
+            <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+
+            <p class="success-msg">{{responseMessage}}</p>
+            <p>&nbsp;</p>
+        </div>
+    </div>
+
+</div>
+<!-- <app-popupbox *ngIf="popupVisibility" (back)="backtoNextPage()" [message]="responseMessage"></app-popupbox> -->

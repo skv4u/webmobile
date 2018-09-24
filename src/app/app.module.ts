@@ -5,20 +5,22 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import 'hammerjs';
+import 'hammer-timejs';
 
 import { AppComponent } from './app.component';
 import { ConfigurationMicroService } from './shared/configuration-micro.service';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { FxroomComponent } from './fxroom/fxroom.component';
-
-import 'hammerjs';
-import 'hammer-timejs';
 import { PopupboxComponent } from './popupbox/popupbox.component';
+import { SelectRoomComponent } from './select-room/select-room.component';
+import { CustomSelectDropdownComponent } from './common/custom-select-dropdown/custom-select-dropdown.component';
 //Route Paths
 const routes: Routes = [
   { path: '', redirectTo: 'feedback', pathMatch: 'full' },
   { path: 'feedback', component: FeedbackComponent },
   { path: 'fxroom', component: FxroomComponent },
+  { path: 'select-room', component: SelectRoomComponent },
   
   { path: '**', redirectTo: 'feedback' }
 ];
@@ -28,7 +30,9 @@ const routes: Routes = [
     AppComponent,
     FeedbackComponent,
     FxroomComponent,
-    PopupboxComponent
+    PopupboxComponent,
+    SelectRoomComponent,
+    CustomSelectDropdownComponent
   ],
   imports: [
     BrowserModule,

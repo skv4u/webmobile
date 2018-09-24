@@ -30,7 +30,7 @@ export class FeedbackComponent implements OnInit {
   }
   queryData: any = {};
   constructor(private _title: Title,public commonService: CommonService) {
-    this.queryData = this.queryParam(window.top.location.href);
+    this.queryData = this.commonService.queryParam(window.top.location.href);   
     if (this.queryData)
       this.listHotelData();
     else
@@ -57,16 +57,6 @@ export class FeedbackComponent implements OnInit {
       }
     )
   }
-  queryParam(myvar) {
-    let urls = myvar;
-    let myurls = urls.split("?");
-    let queryString = myurls[1];
-    if (queryString)
-      return JSON.parse('{"' + queryString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
-    else
-      return null;
-  }
-
   updateRating(rating) {
     // console.log(rating,this.currentRating);
     if(this.currentRating == rating){
@@ -93,14 +83,15 @@ export class FeedbackComponent implements OnInit {
     this.isProcessing = true;
 
     let serverJson = {
-      "PmsCustCode": this.queryData.p,
+      "PmsCustCode": this.queryData.p,  
       "GuestCode": this.queryData.g,
       "FeedbackRating": this.currentRating,
       "FeedbackText": this.feedback,
       "DepartmentCode":"",
       "DepartmentName": "",
-      "RoomNumber":""
-      
+      "RoomNumber":"",
+      "FeedbackType":"CheckedOut",
+      "LoginID": this.queryData.l
     }
  
     this.isProcessing = true;

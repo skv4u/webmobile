@@ -48,4 +48,13 @@ GetMethod(args: string, urltype: string = 'Operation') {
     localStorage.clear();
   }
 
+  queryParam(myvar) {
+    let urls = myvar;
+    let myurls = urls.split("?");
+    let queryString = myurls[1];
+    if (queryString)
+      return JSON.parse('{"' + queryString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+    else
+      return null;
+  }
 }

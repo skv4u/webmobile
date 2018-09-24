@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonService } from './../shared/common.service';
-import { error } from 'selenium-webdriver';
 
 
 @Component({
@@ -58,7 +57,7 @@ export class FxroomComponent implements OnInit {
   popuptype: number = 1;
   roomData: any = {};
   constructor(private _title: Title, public commonService: CommonService) {
-    this.queryData = this.queryParam(window.top.location.href);
+    this.queryData = this.commonService.queryParam(window.top.location.href);    
     if (this.queryData)
       this.listHotelData((sucess) => {
         if (sucess) {
@@ -161,15 +160,7 @@ export class FxroomComponent implements OnInit {
       }
     );
   }
-  queryParam(myvar) {
-    let urls = myvar;
-    let myurls = urls.split("?");
-    let queryString = myurls[1];
-    if (queryString)
-      return JSON.parse('{"' + queryString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
-    else
-      return null;
-  }
+  
   viewTabDetail(key: string, index: number) {
     for (let i = 0; i < this.tabs.length; i++) {
       this.tabs[i].IsActive = false;
@@ -215,7 +206,7 @@ export class FxroomComponent implements OnInit {
       }
     }
     let json = {
-      "createdByName": this.queryData.e,
+      "createdByName": this.queryData.l,
       "hotelCode": this.queryData.p,
       "isRequestRelatedToRoom": true,
       "isRequestedbyGuest": true,
@@ -333,7 +324,9 @@ export class FxroomComponent implements OnInit {
       "FeedbackText": this.feedback,
       "DepartmentCode": this.selectedDepartment,
       "DepartmentName": this.departmentNameByCode(this.selectedDepartment),
-      "RoomNumber": this.roomData.RoomNumber
+      "RoomNumber": this.roomData.RoomNumber,
+      "FeedbackType":"DuringStay",
+      "LoginID": this.queryData.e
 
     }
 

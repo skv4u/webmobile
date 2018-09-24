@@ -1,0 +1,39 @@
+.card table {
+    width: 100%;
+}
+
+.card table td:last-child {
+    text-align: right;
+}
+
+input[type="time"] {
+    padding: 5px;
+    font-size: 18px;
+    font-family: Roboto-Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
+    text-align: center;
+    border: none;
+    /* outline: -webkit-focus-ring-color auto 5px; */
+    letter-spacing: 5px;
+}
+
+input[type="time"]:focus {
+    outline: 0
+}
+
+span.border-bottom {
+    width: 35px;
+    border: 0.5px solid #999;
+    display: inline-block;
+    height: 0;
+    position: relative;
+    top: -17px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+}
+
+span.left {
+    left: -40px;
+}
+
+span.right {
+    left: -37px;
+}
