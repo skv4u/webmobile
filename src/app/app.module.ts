@@ -15,6 +15,7 @@ import { FxroomComponent } from './fxroom/fxroom.component';
 import { PopupboxComponent } from './popupbox/popupbox.component';
 import { SelectRoomComponent } from './select-room/select-room.component';
 import { CustomSelectDropdownComponent } from './common/custom-select-dropdown/custom-select-dropdown.component';
+import { FilterListPipe } from './shared/filter-list.pipe';
 //Route Paths
 const routes: Routes = [
   { path: '', redirectTo: 'feedback', pathMatch: 'full' },
@@ -32,7 +33,8 @@ const routes: Routes = [
     FxroomComponent,
     PopupboxComponent,
     SelectRoomComponent,
-    CustomSelectDropdownComponent
+    CustomSelectDropdownComponent,
+    FilterListPipe
   ],
   imports: [
     BrowserModule,

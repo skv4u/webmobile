@@ -126,7 +126,7 @@ export class FxroomComponent implements OnInit {
     );
   }
   listHotelOffers() {
-    // https://fortuneclouddevapi.azurewebsites.net/v1/configuration/offer/get-filtered-record/Property/20002/Active
+    
     this.isProcessing = true;
     this.offerList = [];
     let jsonData = {
@@ -168,7 +168,7 @@ export class FxroomComponent implements OnInit {
     this.tabs[index].IsActive = true;
 
     this.currentTab = key;
-    this._title.setTitle('FX-Service : ' + this.tabs[index].tabName);
+    this._title.setTitle(this.hotelData.Name +' : ' + this.tabs[index].tabName);
   }
   backtoNextPage() {
     this.popupVisibility = false;
@@ -318,6 +318,7 @@ export class FxroomComponent implements OnInit {
 
 
     let serverJson = {
+      "GuestVisitID":0,
       "PmsCustCode": this.queryData.p,
       "GuestCode": this.queryData.g,
       "FeedbackRating": this.currentRating,
@@ -326,9 +327,9 @@ export class FxroomComponent implements OnInit {
       "DepartmentName": this.departmentNameByCode(this.selectedDepartment),
       "RoomNumber": this.roomData.RoomNumber,
       "FeedbackType":"DuringStay",
+      "ReservationNumber":this.queryData.resno,
       "LoginID": this.queryData.e
-
-    }
+    };
 
     this.isProcessing = true;
     this.commonService.PostMethod("Guest/GuestFeedback/", serverJson).subscribe(

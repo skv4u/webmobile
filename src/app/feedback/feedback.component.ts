@@ -83,6 +83,7 @@ export class FeedbackComponent implements OnInit {
     this.isProcessing = true;
 
     let serverJson = {
+      "GuestVisitID":0,
       "PmsCustCode": this.queryData.p,  
       "GuestCode": this.queryData.g,
       "FeedbackRating": this.currentRating,
@@ -91,9 +92,9 @@ export class FeedbackComponent implements OnInit {
       "DepartmentName": "",
       "RoomNumber":"",
       "FeedbackType":"CheckedOut",
-      "LoginID": this.queryData.l
+      "LoginID": this.queryData.l,
+      "ReservationNumber":this.queryData.resno
     }
- 
     this.isProcessing = true;
     this.commonService.PostMethod("Guest/GuestFeedback/", serverJson).subscribe(
       data => {
