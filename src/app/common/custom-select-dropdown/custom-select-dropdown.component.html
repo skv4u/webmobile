@@ -1,11 +1,12 @@
 <div class="chips chips-initial input-field">
+    <div class="placeholder">{{placehoder}}</div>
     <div class="chip" *ngFor="let chip of selectedList">{{chip.text}}
         <span class="closebtn" (click)="removeItem(chip)"><i class="fas fa-times-circle"></i></span>
     </div>
-
-    <input type="text" class="chip-input" id="chip-input" (keydown)="listPosition($event)" (focus)="inputBoxFocus(true)" (focusout)="inputBoxFocus(false)" [(ngModel)]="ChipInput" style="border-bottom: 1px solid #f3f3f3;">
+    <!-- (focusout)="inputBoxFocus(false)" -->
+    <input type="text" class="chip-input" id="chip-input" (keydown)="listPosition($event)" (focus)="inputBoxFocus(true)" [(ngModel)]="ChipInput" style="border-bottom: 1px solid #999999;">
 
 </div>
 <ul *ngIf="IsChipListVisibile">
-    <li *ngFor="let m of chipList | filterList : ChipInput" (click)="pushtoselected(m)" [class.active]="m.active">{{m.text}}</li>
+    <li class="chips" *ngFor="let m of chipList | filterList : ChipInput" (click)="pushtoselected(m)" [class.active]="m.active">{{m.text}}</li>
 </ul>

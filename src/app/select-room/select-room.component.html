@@ -47,10 +47,13 @@
 
     <div class="card" *ngIf="isCreateVisible">
         <div class="card-rate center"> Select Room of Your Choice</div>
-        <app-custom-select-dropdown></app-custom-select-dropdown>
-        <!-- <app-custom-select-dropdown></app-custom-select-dropdown> -->
+        <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
+        <div>&nbsp;</div>
+        <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
     </div>
-
+    <div class="button top20" *ngIf="isCreateVisible">
+        <button (click)="saveRoom()">Submit</button>
+    </div>
 
     <div class="card center" *ngIf="!isCreateVisible">
         <div *ngIf="saveSuccess">

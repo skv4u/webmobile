@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2,Input, Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-custom-select-dropdown',
@@ -6,30 +6,42 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
   styleUrls: ['./custom-select-dropdown.component.css']
 })
 export class CustomSelectDropdownComponent implements OnInit {
+  @Input('placeholder') placehoder?:string;
+  @Input('chipList') chipList:any[] = [];
+  @Input('selectedList') selectedList:any[] = [];
+  @Output() selectedListParent= new EventEmitter();
   outsideClick: Function;
-  
-  MasterChipList: any[] = [
-    { "key": "Chip1", "text": "Chip1" },
-    { "key": "Chip2", "text": "Chip2 chip2" },
-    { "key": "Chip3", "text": "Chip3 chip3 chip3" },
-    { "key": "Chip4", "text": "Chip4 chip4 chip4" }
-  ];
-  chipList: any[] = [
-    { "key": "Chip1", "text": "Chip1", "active": false },
-    { "key": "Chip2", "text": "Chip2 chip2", "active": false },
-    { "key": "Chip3", "text": "Chip3 chip3 chip3", "active": false },
-    { "key": "Chip4", "text": "Chip4 chip4 chip4", "active": false }
-  ];
-  selectedList: any[] = [
-    // { "key": "Chip1", "text": "Chip1" },
-    // { "key": "Chip2", "text": "Chip2 chip2" }
-  ];
   ChipInput: string = '';
   IsChipListVisibile: boolean = false;
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
+    this.listGenerate();
     this.filterSelected();
+  }
+  listGenerate(){
+    if(!this.chipList.length){
+      this.chipList = [
+        { "key": "Chip1", "text": "Chip1", "active": false },
+        { "key": "Chip2", "text": "Chip2 chip2", "active": false },
+        { "key": "Chip3", "text": "Chip3 chip3 chip3", "active": false },
+        { "key": "Chip4", "text": "Chip4 chip4 chip4", "active": false }
+      ];
+    }
+    else {
+      for(let m of this.chipList){
+        m.active = false;
+      }
+    }
+    if(!this.placehoder){
+      this.placehoder = 'Select data';
+    }
+    // if(!this.selectedList.length)
+   
+    //this.selectedList = [
+      // { "key": "Chip1", "text": "Chip1" },
+      // { "key": "Chip2", "text": "Chip2 chip2" }
+    //];
   }
   filterSelected() {
     let selectedList: string[] = [];
@@ -47,7 +59,8 @@ export class CustomSelectDropdownComponent implements OnInit {
       return v.key != chip.key
     });
     this.chipList.push({ "key": chip.key, "text": chip.text });
-    // this.chipList[0].active = true;
+    // this.selectedList = this.selectedList.slice();
+    this.valueChanges();
 
   }
   pushtoselected(chip: any) {
@@ -59,78 +72,82 @@ export class CustomSelectDropdownComponent implements OnInit {
     if (this.chipList.length) {
       this.chipList[0].active = true;
     }
-    this.IsChipListVisibile = true;
-  //  this.outsideClick = this.outSideClick();
+
+    if (this.outsideClick == undefined)
+      this.outsideClick = this.outSideClick();
   }
   inputBoxFocus(isFocus: boolean) {
-    console.log(event.target);
+    
     this.IsChipListVisibile = isFocus;
-    // this.outsideClick = this.outSideClick();
+    if (this.outsideClick == undefined)
+    this.outsideClick = this.outSideClick();
+    
   }
   listPosition(elem: any) {
-    console.log(elem);
     if (elem.keyCode == 13) { //Enter key
-      if (this.chipList.length){
-        let currentIndex:number=-1;
-        for(let m in this.chipList){
-          if(this.chipList[m].active){
+      if (this.chipList.length) {
+        let currentIndex: number = -1;
+        for (let m in this.chipList) {
+          if (this.chipList[m].active) {
             currentIndex = Number(m);
           }
         }
-        if(currentIndex > -1)
-        this.pushtoselected(this.chipList[currentIndex]);
+        if (currentIndex > -1)
+          this.pushtoselected(this.chipList[currentIndex]);
       }
     } else if (elem.keyCode == 40) { //down arrow
       this.moveActive('down');
     }
     else if (elem.keyCode == 38) { //up arrow
       this.moveActive('up');
-      
     }
-    else if (elem.keyCode == 8) { //up arrow
-      this.removeItem(this.selectedList[this.selectedList.length - 1]);
+    else if (elem.keyCode == 8) { //backspace
+      let len = elem.target.value.length;
+      if (len == 0 && this.selectedList.length) {
+        this.removeItem(this.selectedList[this.selectedList.length - 1]);
+      }
     }
   }
-  moveActive(type:string){
-    let currentIndex:number=0;
-    for(let m in this.chipList){
-      if(this.chipList[m].active){
+  moveActive(type: string) {
+    let currentIndex: number = -1;
+    for (let m in this.chipList) {
+      if (this.chipList[m].active) {
         currentIndex = Number(m);
       }
       this.chipList[m].active = false;
     }
-    if(type == 'down'){
+    if (currentIndex > -1) {
+      if (type == 'down') {
+        if (currentIndex == this.chipList.length - 1) {
+          this.chipList[this.chipList.length - 1].active = true;
+        }
+        else {
+          this.chipList[currentIndex + 1].active = true;
+        }
+      }
+      else {
+        if (currentIndex == 0) {
+          this.chipList[0].active = true;
+        }
+        else {
+          this.chipList[currentIndex - 1].active = true;
+        }
+      }
+    }
+  }
+  outSideClick() {
+    return this.renderer.listen('body', 'click', event => {
+      let target = event.target.classList.contains('chips') || event.target.classList.contains('chip-input');
+      if (!target) {
+        this.IsChipListVisibile = false;
+        this.outsideClick();
+        this.outsideClick = undefined;
+      }
+    });
+  }
 
-    
-    if(currentIndex == this.chipList.length - 1){
-      this.chipList[this.chipList.length - 1].active = true;
-    }
-    else {
-      this.chipList[currentIndex+1].active = true;
-    }
+  valueChanges(){
+    this.selectedListParent.emit(this.selectedList);
   }
-  else {
-    if(currentIndex == 0){
-      this.chipList[0].active = true;
-    }
-    else {
-      this.chipList[currentIndex-1].active = true;
-    }
-  }
-  }
-  // outSideClick() {
-   
 
-  //   return this.renderer.listen('body', 'click', event => {
-  //     console.log(event.target);
-  //     let target = event.target.classList.contains('chips') || event.target.classList.contains('chips');
-  //     if(target){
-  //       this.IsChipListVisibile = true;
-  //     }
-  //     else{
-  //       this.IsChipListVisibile = false;
-  //       this.outsideClick();
-  //     }
-  //   });
-  // }
 }

@@ -90,7 +90,7 @@ export class FeedbackComponent implements OnInit {
       "FeedbackText": this.feedback,
       "DepartmentCode":"",
       "DepartmentName": "",
-      "RoomNumber":"",
+      "RoomNumber":this.queryData.rmno,
       "FeedbackType":"CheckedOut",
       "LoginID": this.queryData.l,
       "ReservationNumber":this.queryData.resno

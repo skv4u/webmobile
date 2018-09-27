@@ -17,9 +17,9 @@ export class FxroomComponent implements OnInit {
   pageNotFound: boolean = false;
   currentTab: string = "ServiceRequest";
   selectedDepartment: string = "Select Department";
-  departmentError:boolean = false;
-  feedbackTextError:boolean = false;
-  
+  departmentError: boolean = false;
+  feedbackTextError: boolean = false;
+
 
   totalRating: number[] = [1, 2, 3, 4, 5];
   currentRating: number = 0;
@@ -57,7 +57,7 @@ export class FxroomComponent implements OnInit {
   popuptype: number = 1;
   roomData: any = {};
   constructor(private _title: Title, public commonService: CommonService) {
-    this.queryData = this.commonService.queryParam(window.top.location.href);    
+    this.queryData = this.commonService.queryParam(window.top.location.href);
     if (this.queryData)
       this.listHotelData((sucess) => {
         if (sucess) {
@@ -72,7 +72,6 @@ export class FxroomComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._title.setTitle('FX-Service : Service Request');
   }
   listHotelData(callback) {
     this.isProcessing = true;
@@ -82,6 +81,9 @@ export class FxroomComponent implements OnInit {
           this.hotelData.FullName = data.Data.PropertyName;
           this.hotelData.Name = data.Data.PropertyName;
           this.hotelData.Logo = data.Data.ShortLogo;
+          // this._title.setTitle('FX-Service : Service Request');
+          this._title.setTitle(this.hotelData.Name + ' : ' + this.tabs[0].tabName);
+
         }
         // else {
         //   this.pageNotFound = true;
@@ -126,7 +128,7 @@ export class FxroomComponent implements OnInit {
     );
   }
   listHotelOffers() {
-    
+
     this.isProcessing = true;
     this.offerList = [];
     let jsonData = {
@@ -160,7 +162,7 @@ export class FxroomComponent implements OnInit {
       }
     );
   }
-  
+
   viewTabDetail(key: string, index: number) {
     for (let i = 0; i < this.tabs.length; i++) {
       this.tabs[i].IsActive = false;
@@ -168,7 +170,7 @@ export class FxroomComponent implements OnInit {
     this.tabs[index].IsActive = true;
 
     this.currentTab = key;
-    this._title.setTitle(this.hotelData.Name +' : ' + this.tabs[index].tabName);
+    this._title.setTitle(this.hotelData.Name + ' : ' + this.tabs[index].tabName);
   }
   backtoNextPage() {
     this.popupVisibility = false;
@@ -182,17 +184,6 @@ export class FxroomComponent implements OnInit {
   }
 
   saveServiceRequest() {
-    // this.saveSuccess =false;
-    // this.isCreateVisible = false;
-    // this.isProcessing = false;
-    // this.responseMessage = "Oops!!! Invalid room number";
-    // if(1){
-    //   return
-    // }
-    // console.log(this.serviceList);
-    //   if(1){
-    //   return
-    // }
     let serviceRequest: any[] = [];
     for (let m of this.serviceList) {
       for (let rq of m.requests) {
@@ -217,9 +208,7 @@ export class FxroomComponent implements OnInit {
     this.isProcessing = true;
     this.commonService.PostMethod("servicetransactions/savewithflrinfo", json, "Datahub").subscribe(
       data => {
-        // console.log(data);
-        // this.saveSuccess =true;
-        // this.isCreateVisible = false;
+
         this.responseMessage = "Request Sent Successfully ";
         this.popuptype = 1;
         this.isProcessing = false;
@@ -235,23 +224,7 @@ export class FxroomComponent implements OnInit {
       }
     );
   }
-  /*currentTab: string = "ServiceRequest";
-  tabs: any = [{
-    "tabName": "Service Request",
-    "tabKey": "ServiceRequest",
-    "IsActive": true
-  },
-  {
-    "tabName": "Feedback",
-    "tabKey": "Feedback",
-    "IsActive": false
-  },
-  {
 
-    "tabName": "Offers",
-    "tabKey": "Offers",
-    "IsActive": false
-  }];*/
   loadTab(type: string) {
     if (type == 'left') {
       if (this.currentTab == 'Offers') return;
@@ -291,8 +264,8 @@ export class FxroomComponent implements OnInit {
   updateActual() {
     this.tempRating = this.currentRating;
   }
-  validateText(){
-    if(this.feedback.trim().length < 2){
+  validateText() {
+    if (this.feedback.trim().length < 2) {
       this.feedbackTextError = true;
     }
     else {
@@ -301,15 +274,15 @@ export class FxroomComponent implements OnInit {
   }
   saveFeedback() {
     // console.log(this.selectedDepartment,typeof this.selectedDepartment);
-    if(this.selectedDepartment == 'Select Department'){
+    if (this.selectedDepartment == 'Select Department') {
       this.departmentError = true;
       return;
     }
-    if(this.feedback.trim().length < 2){
+    if (this.feedback.trim().length < 2) {
       this.feedbackTextError = true;
       return;
     }
-    
+
     // if (!this.isRated) {
     //   this.error = true;
     //   return;
@@ -318,7 +291,7 @@ export class FxroomComponent implements OnInit {
 
 
     let serverJson = {
-      "GuestVisitID":0,
+      "GuestVisitID": 0,
       "PmsCustCode": this.queryData.p,
       "GuestCode": this.queryData.g,
       "FeedbackRating": this.currentRating,
@@ -326,8 +299,8 @@ export class FxroomComponent implements OnInit {
       "DepartmentCode": this.selectedDepartment,
       "DepartmentName": this.departmentNameByCode(this.selectedDepartment),
       "RoomNumber": this.roomData.RoomNumber,
-      "FeedbackType":"DuringStay",
-      "ReservationNumber":this.queryData.resno,
+      "FeedbackType": "DuringStay",
+      "ReservationNumber": this.queryData.resno,
       "LoginID": this.queryData.e
     };
 
@@ -352,6 +325,4 @@ export class FxroomComponent implements OnInit {
     }
     return '';
   }
-
-
 }

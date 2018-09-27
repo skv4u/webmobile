@@ -20,6 +20,20 @@ export class SelectRoomComponent implements OnInit {
     "Name": "",
     "Logo": ""
   };
+  featureList :any[]= [
+    { "key": "Chip11", "text": "Chip11" },
+    { "key": "Chip22", "text": "Chip2 chip22" },
+    { "key": "Chip33", "text": "Chip3 chip3 chip33" },
+    { "key": "Chip44", "text": "Chip4 chip4 chip44" }
+  ];
+  selectedFeatureList:any[] = [];
+  floorList :any[]= [
+    { "key": "Chip111", "text": "Chip111" },
+    { "key": "Chip222", "text": "Chip2 chip222" },
+    { "key": "Chip333", "text": "Chip3 chip3 chip333" },
+    { "key": "Chip444", "text": "Chip4 chip4 chip444" }
+  ];
+  selectedFloorList:any[] = [];
   roomData: any = {};
   queryData: any = {};
   constructor(private _title: Title,public commonService: CommonService) {
@@ -34,7 +48,7 @@ export class SelectRoomComponent implements OnInit {
 
   }
   ngOnInit() {
-    this._title.setTitle("Customer Feedback");
+    this._title.setTitle("Select Room");
   }
   listHotelData() {
     this.isProcessing = true;
@@ -45,7 +59,7 @@ export class SelectRoomComponent implements OnInit {
           this.hotelData =  {
             "FullName":  data.Data.PropertyName,
             "Name":  data.Data.PropertyName,
-            "Logo": data.Data.ShortLogo
+            "Logo": data.Data.ShortLogoa
           }
           // this.hotelData.FullName = data.Data.PropertyName;
           // this.hotelData.Name = data.Data.PropertyName;
@@ -72,5 +86,16 @@ export class SelectRoomComponent implements OnInit {
         this.isProcessing = false;
       }
     );
+  }
+  saveRoom(){
+    console.log(this.selectedFeatureList);
+    console.log(this.selectedFloorList);
+  }
+  updateParent(elem,type){
+// console.log(elem)
+// console.log(type)
+if(type == 'feature'){
+  this.selectedFeatureList = elem;
+}
   }
 }

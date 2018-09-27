@@ -49,12 +49,10 @@ ul {
 }
 
 li {
-    /* border-bottom: 3px solid #f9f9f9; */
     padding: 5px 0px 10px 3px;
     margin: 5px;
     line-height: 20px;
     cursor: pointer;
-    /* width: 100%; */
     margin-left: 0px;
     background: #f3f3f3;
 }
