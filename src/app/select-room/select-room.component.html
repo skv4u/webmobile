@@ -50,8 +50,40 @@
         <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
         <div>&nbsp;</div>
         <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
+
+        <div class="font11 top10 center">
+            <i class="fa fa-exclamation-circle"></i> Select 1 Room(s)
+        </div>
+
     </div>
-    <div class="button top20" *ngIf="isCreateVisible">
+    <div class="card" *ngIf="isCreateVisible">
+        <div class="select-room">
+            <div class="image-block">
+                <img src="./assets/images/icons/Vacant.svg">
+            </div>
+            <div>101</div>
+        </div>
+        <div class="select-room active">
+            <div class="image-block">
+                <img src="./assets/images/icons/Vacant.svg">
+            </div>
+            <div>101</div>
+        </div>
+        <div class="select-room">
+            <div class="image-block">
+                <img src="./assets/images/icons/Vacant.svg">
+            </div>
+            <div>101</div>
+        </div>
+        <div class="select-room active">
+            <div class="image-block">
+                <img src="./assets/images/icons/Vacant.svg">
+            </div>
+            <div>101</div>
+        </div>
+    </div>
+
+    <div class="button1 top20" *ngIf="isCreateVisible">
         <button (click)="saveRoom()">Submit</button>
     </div>
 

@@ -65,7 +65,8 @@ body {
     border-radius: 4px;
 }
 
-.button button {
+.button button,
+.button1 button {
     background-color: #4cc400;
     width: 100%;
     padding: 12px;
@@ -143,6 +144,14 @@ button.star i.active {
 
 .top20 {
     margin-top: 20px;
+}
+
+.top10 {
+    margin-top: 10px;
+}
+
+.top5 {
+    margin-top: 5px;
 }
 
 .success-msg {

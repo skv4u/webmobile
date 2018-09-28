@@ -37,3 +37,41 @@ span.left {
 span.right {
     left: -37px;
 }
+
+.select-room {
+    height: 50px;
+    width: 49px;
+    display: inline-block;
+    border: 1px solid #d2c2c2;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+    padding: 10px 12px 21px 12px;
+    border-radius: 4px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.select-room div {
+    font-size: 12px;
+    margin-top: 2px;
+    overflow: hidden;
+}
+
+.select-room img {
+    height: 32px;
+}
+
+.select-room.active {
+    background: #49c70f;
+    color: #ffffff;
+}
+
+.image-block {
+    border: 1px solid #fff;
+    /* padding: 0px; */
+    background: #fff;
+    /* margin: 0; */
+    width: 26px;
+    text-align: center;
+    display: inline-block;
+}
