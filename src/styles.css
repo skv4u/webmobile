@@ -167,7 +167,7 @@ button.star i.active {
     border-bottom: 1px solid;
     /* width: 350px; */
     margin-left: -15px;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 div.tab-container a {
@@ -175,6 +175,7 @@ div.tab-container a {
     text-decoration: none;
     margin-left: 20px;
     color: #333;
+    display: inline-block;
 }
 
 div.tab-container a.active {
@@ -206,4 +207,143 @@ hr {
 
 .font11 {
     font-size: 11px;
+}
+
+.checkbox label:after,
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1.6px solid #a9a9a9;
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 15px;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"]+.cr>.cr-icon,
+.radio label input[type="radio"]+.cr>.cr-icon {
+    /* transform: scale(3) rotateZ(-20deg); */
+    opacity: 0;
+    /* transition: all .3s ease-in; */
+}
+
+.checkbox label input[type="checkbox"]:checked+.cr>.cr-icon,
+.radio label input[type="radio"]:checked+.cr>.cr-icon {
+    /* transform: scale(1) rotateZ(0deg); */
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled+.cr,
+.radio label input[type="radio"]:disabled+.cr {
+    opacity: .5;
+}
+
+.checkbox label {
+    cursor: pointer;
+}
+
+.checkbox {
+    padding: 0px 0px 17px 0px;
+}
+
+.tab-container a {
+    cursor: pointer;
+}
+
+.offer-image img {
+    width: 100%;
+}
+
+.image-right,
+.image-right-text {
+    position: absolute;
+    padding: 15px;
+    height: 97px;
+    width: 65px;
+    z-index: 1001;
+}
+
+.image-right {
+    background-color: #000000;
+    opacity: 0.2;
+}
+
+.image-right-text {
+    color: #fff;
+    margin-top: 10px;
+}
+
+.image-right-text span {
+    color: #e3d002;
+    font-size: 35px;
+}
+
+.image-bottom {
+    background: #2e2c29;
+    position: relative;
+    color: #fff;
+    padding: 5px;
+    width: 98.5%;
+    top: -5px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+.font13 {
+    font-size: 13px;
+}
+
+@media only screen and (max-width: 600px) {
+    .offer-image img {
+        height: 128px;
+        width: 320px;
+    }
+    .image-bottom {
+        width: 310px;
+    }
+}
+
+select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #999999;
+    color: #666666;
+}
+
+.image-description {
+    margin-top: 7px;
 }

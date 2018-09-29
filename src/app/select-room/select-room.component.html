@@ -4,7 +4,7 @@
         <p>404 - Page not found</p>
     </div>
 </div> -->
-<div class="container">
+<div class="container" style="height:auto">
     <div class="header">
         <div class="box1 center">
             <img *ngIf="hotelData.Logo" [src]="hotelData.Logo">
@@ -21,15 +21,21 @@
     <div class="card" *ngIf="isCreateVisible">
         <table>
             <tr>
-                <td>Room Type : <strong>{{roomData.RoomTypeName}}</strong></td>
-                <td>Room Count : <strong>1</strong></td>
+                <td>Room Type :
+                    <strong>{{roomData.RoomTypeName}}</strong>
+                </td>
+                <td>Room Count :
+                    <strong>1</strong>
+                </td>
             </tr>
         </table>
     </div>
 
     <div class="card" *ngIf="isCreateVisible">
         <div class="card-rate center"> Expected Time of Arrival </div>
-        <div class="center"><input id="appt-time" type="time" name="appt-time" value="13:30"></div>
+        <div class="center">
+            <input id="appt-time" type="time" name="appt-time" value="13:30">
+        </div>
         <div class="center">
             <span class="border-bottom left"></span>
             <span class="border-bottom right"></span>
@@ -44,42 +50,44 @@
         </div>
 
     </div>
+    <div *ngIf="!isSingle">
+        <div class="card" *ngIf="isCreateVisible">
+            <div class="card-rate center"> Select Room of Your Choice</div>
+            <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
+            <div>&nbsp;</div>
+            <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
 
-    <div class="card" *ngIf="isCreateVisible">
-        <div class="card-rate center"> Select Room of Your Choice</div>
-        <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
-        <div>&nbsp;</div>
-        <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
+            <div class="font11 top10 center">
+                <i class="fa fa-exclamation-circle"></i> Select 1 Room(s)
+            </div>
 
-        <div class="font11 top10 center">
-            <i class="fa fa-exclamation-circle"></i> Select 1 Room(s)
+            <div class="select-room" *ngFor="let m of roomList; let i=index" [class.active]="m.IsAllocated" (click)="changeAllocatedRoom(i)">
+                <div class="image-block">
+                    <img src="./assets/images/icons/Vacant.svg">
+                </div>
+                <div>{{m.RoomName}}</div>
+            </div>
+
         </div>
-
     </div>
-    <div class="card" *ngIf="isCreateVisible">
-        <div class="select-room">
-            <div class="image-block">
-                <img src="./assets/images/icons/Vacant.svg">
+    <div *ngIf="isSingle">
+        <div class="card" *ngIf="isCreateVisible">
+            <div class="card-rate center"> Select Room of Your Choice</div>
+            <div class="tab-container">
+                <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
             </div>
-            <div>101</div>
-        </div>
-        <div class="select-room active">
-            <div class="image-block">
-                <img src="./assets/images/icons/Vacant.svg">
+            <div class="tab-default-value">
+                <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
+                <div>&nbsp;</div>
+                <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
             </div>
-            <div>101</div>
-        </div>
-        <div class="select-room">
-            <div class="image-block">
-                <img src="./assets/images/icons/Vacant.svg">
+            <div class="select-room" *ngFor="let m of roomList; let i=index" [class.active]="m.IsAllocated" (click)="changeAllocatedRoom(i)">
+                <div class="image-block">
+                    <img src="./assets/images/icons/Vacant.svg">
+                </div>
+                <div>{{m.RoomName}}</div>
             </div>
-            <div>101</div>
-        </div>
-        <div class="select-room active">
-            <div class="image-block">
-                <img src="./assets/images/icons/Vacant.svg">
-            </div>
-            <div>101</div>
+
         </div>
     </div>
 
@@ -89,22 +97,32 @@
 
     <div class="card center" *ngIf="!isCreateVisible">
         <div *ngIf="saveSuccess">
-            <p>&nbsp;</p>
-
+            <div>&nbsp;</div>
             <img src="./assets/images/success.png">
+            <div class="success-msg" style="margin-top: 10px; font-size: 13px;">{{responseMessage}}</div>
+            <div class="success-roomnumber">401, 402</div>
+            <div class="font11 top20">
+                <i class="fa fa-exclamation-circle"></i> Please note - It is only a room request, the hotel might give you the same room or allocate a different room during the time of checkin at the hotel.
 
-            <p class="success-msg">{{responseMessage}}</p>
-            <p>&nbsp;</p>
+            </div>
         </div>
         <div *ngIf="!saveSuccess">
-            <p>&nbsp;</p>
-
+            <div>&nbsp;</div>
             <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+            <div class="error-msg" style="margin-top: 10px; font-size: 13px;">
+                <br /> Oops!!! Room Number
+                <span class="error-room-number">101, 102</span> has already booked.
+                <br />
+                <br />
+                <a href="#">Click here to try again</a>
+            </div>
 
-            <p class="success-msg">{{responseMessage}}</p>
-            <p>&nbsp;</p>
         </div>
+
+
     </div>
 
 </div>
+
+
 <!-- <app-popupbox *ngIf="popupVisibility" (back)="backtoNextPage()" [message]="responseMessage"></app-popupbox> -->

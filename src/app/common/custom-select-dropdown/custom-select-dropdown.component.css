@@ -40,7 +40,7 @@ ul {
     max-height: 170px;
     overflow: auto;
     position: absolute;
-    width: 620px;
+    width: 46%;
     z-index: 5;
     background: #fff;
     border: 1px solid #f3f3f3;
@@ -63,9 +63,10 @@ li:hover {
     background: #cac5c5;
 }
 
-@media only screen and (max-width: 1300px) {
+
+/* @media only screen and (max-width: 1300px) {
     ul {
-        width: 520px;
+        width: 50%;
     }
 }
 
@@ -86,9 +87,16 @@ li:hover {
         width: 313px;
     }
 }
+*/
 
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 1100px) {
     ul {
-        width: 330px;
+        width: 45%
+    }
+}
+
+@media only screen and (max-width: 390px) {
+    ul {
+        width: 88%
     }
 }
