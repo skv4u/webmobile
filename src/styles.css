@@ -347,3 +347,7 @@ select {
 .image-description {
     margin-top: 7px;
 }
+
+.left {
+    text-align: left;
+}

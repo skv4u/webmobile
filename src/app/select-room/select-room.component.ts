@@ -16,7 +16,7 @@ export class SelectRoomComponent implements OnInit {
   error: boolean = false;
   isProcessing: boolean = false;
   pageNotFound: boolean = false;
-  isSingle: boolean = false;
+  isSingle: boolean = true;
   currentTab:string = '';
   hotelData: any = {
     "FullName": "",
@@ -24,21 +24,16 @@ export class SelectRoomComponent implements OnInit {
     "Logo": ""
   };
   tabs: any = [{
-    "tabName": "Service Request",
+    "tabName": "Deluxe",
     "tabKey": "ServiceRequest",
     "IsActive": true
   },
   {
-    "tabName": "Feedback",
+    "tabName": "Standard",
     "tabKey": "Feedback",
     "IsActive": false
-  },
-  {
-
-    "tabName": "Offers",
-    "tabKey": "Offers",
-    "IsActive": false
-  }];
+  }
+  ];
   roomTypeList: any[] = [];
   roomList: any[] = [];
   

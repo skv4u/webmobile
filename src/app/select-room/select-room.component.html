@@ -32,15 +32,6 @@
     </div>
 
     <div class="card" *ngIf="isCreateVisible">
-        <div class="card-rate center"> Expected Time of Arrival </div>
-        <div class="center">
-            <input id="appt-time" type="time" name="appt-time" value="13:30">
-        </div>
-        <div class="center">
-            <span class="border-bottom left"></span>
-            <span class="border-bottom right"></span>
-        </div>
-
         <div class="card-rate center" style="padding:0"> Special Instruction </div>
         <div class="feedback top20">
             <textarea rows="1" [(ngModel)]="feedback" placeholder="Enter Special Instruction"></textarea>
@@ -76,6 +67,16 @@
             <div class="tab-container">
                 <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
             </div>
+
+            <div class="card-rate center"> Expected Time of Arrival </div>
+            <div class="center">
+                <input id="appt-time" type="time" name="appt-time" value="13:30">
+            </div>
+            <div class="center">
+                <span class="border-bottom left"></span>
+                <span class="border-bottom right"></span>
+            </div>
+
             <div class="tab-default-value">
                 <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
                 <div>&nbsp;</div>
@@ -101,7 +102,7 @@
             <img src="./assets/images/success.png">
             <div class="success-msg" style="margin-top: 10px; font-size: 13px;">{{responseMessage}}</div>
             <div class="success-roomnumber">401, 402</div>
-            <div class="font11 top20">
+            <div class="font11 top20 left">
                 <i class="fa fa-exclamation-circle"></i> Please note - It is only a room request, the hotel might give you the same room or allocate a different room during the time of checkin at the hotel.
 
             </div>
