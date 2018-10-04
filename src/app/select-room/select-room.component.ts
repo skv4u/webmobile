@@ -23,7 +23,7 @@ export class SelectRoomComponent implements OnInit {
     "Name": "",
     "Logo": ""
   };
-  tabs: any = [{
+  /*tabs: any = [{
     "tabName": "Deluxe",
     "tabKey": "ServiceRequest",
     "IsActive": true
@@ -33,40 +33,24 @@ export class SelectRoomComponent implements OnInit {
     "tabKey": "Feedback",
     "IsActive": false
   }
-  ];
+  ];*/
+  tabs:any[]=[];
   roomTypeList: any[] = [];
   roomList: any[] = [];
   
-  featureList: any[] = [
-    { "key": "Chip11", "text": "Chip11" },
-    { "key": "Chip22", "text": "Chip2 chip22" },
-    { "key": "Chip33", "text": "Chip3 chip3 chip33" },
-    { "key": "Chip44", "text": "Chip4 chip4 chip44" }
-  ];
+  featureList: any[] = [];
   selectedFeatureList: any[] = [];
-  floorList: any[] = [
-    { "key": "Chip111", "text": "Chip111" },
-    { "key": "Chip222", "text": "Chip2 chip222" },
-    { "key": "Chip333", "text": "Chip3 chip3 chip333" },
-    { "key": "Chip444", "text": "Chip4 chip4 chip444" }
-  ];
+  floorList: any[] = [];
   selectedFloorList: any[] = [];
   roomData: any = {};
   queryData: any = {};
+  totalRoom:number = 0;
   constructor(private _title: Title, public commonService: CommonService) {
     this.listHotelData();
-
-    // this.queryData = this.commonService.queryParam(window.top.location.href);
-    // if (this.queryData)
-    //   this.listHotelData();
-    // else
-    //   this.pageNotFound = true;
-
   }
   ngOnInit() {
     this._title.setTitle("Choose room of your choice");
     this.allApi();
-
   }
 
   listHotelData() {
@@ -80,10 +64,6 @@ export class SelectRoomComponent implements OnInit {
             "Name": data.Data.PropertyName,
             "Logo": data.Data.ShortLogoa
           }
-          // this.hotelData.FullName = data.Data.PropertyName;
-          // this.hotelData.Name = data.Data.PropertyName;
-          // this.hotelData.Logo = data.Data.ShortLogo;
-
         }
         else {
           this.pageNotFound = true;
@@ -131,10 +111,12 @@ export class SelectRoomComponent implements OnInit {
     this.currentTab = key;
     // this._title.setTitle(this.hotelData.Name + ' : ' + this.tabs[index].tabName);
   }
-  formatMultiSelect(key1:string,key2:string,type:string){
-    let list:any [] = type=='floor' ? this.floorList : this.featureList;
+  formatMultiSelect(key1:string,key2:string,type:string,data:any){
+    if(!data){
+      return [];
+    }
     let returnlist:any [] = [];
-    for(let m of list){
+    for(let m of data){
       returnlist.push({
         "key":m[key1],
         "text":m[key2]
@@ -142,12 +124,36 @@ export class SelectRoomComponent implements OnInit {
     }
     return returnlist;
   }
-  changeAllocatedRoom(index:number){
-    
+  changeAllocatedRoom(index:number){    
     this.roomList[index].IsAllocated = !this.roomList[index].IsAllocated;
   }
   allApi() {
-    this.roomTypeList = [
+    let requestJson ={ 
+      "LoginID": "mobiledev@idsnext.com", 
+      "PmsCustCode":20002, 
+      "ReservationNumber":327,
+      "FeatureID":"",
+      "FloorID":"",
+      "RoomType":"DLX"
+    };
+    this.isCreateVisible = false;
+    this.commonService.PostMethod('CheckIn/PreStayReservationDetailsGET',requestJson).subscribe(
+      data=>{
+        console.log(data);
+        this.isCreateVisible = true;
+        this.featureList = this.formatMultiSelect('RoomFeatureID','RoomFeatureName','feature', data.Response.RoomFeatureList);
+        this.floorList =  this.formatMultiSelect('FloorID','FloorName','floor',data.Response.RoomFloorList);
+        this.roomList = data.Response.AvailableRoomList;
+        this.roomTypeList = data.Response.RoomReferenceList;
+        let roomTypes:string[] = this.checkSingleTypeRoom();
+        this.isSingle = roomTypes.length == 1;
+        this.totalRoom = this.roomTypeList.length;
+        if(!this.isSingle){
+          this.tabs = this.getTabList();
+        }
+      }
+    )
+    /*this.roomTypeList = [
       {
         "FeatureList": [
           {
@@ -228,6 +234,27 @@ export class SelectRoomComponent implements OnInit {
       }
     ];
     this.featureList = this.formatMultiSelect('FeatureID','FeatureCode','feature');
-    this.floorList =  this.formatMultiSelect('FloorID','FloorCode','floor');
+    this.floorList =  this.formatMultiSelect('FloorID','FloorCode','floor');*/
+  }
+  checkSingleTypeRoom(){
+    let roomtype:string[] = [];
+    for(let m of this.roomTypeList){
+      roomtype.push(m.RoomTypeCode);
+    }
+    roomtype = Array.from(new Set(roomtype));
+   return roomtype;
+
+  }
+  getTabList(){
+    let roomtype:any[] = [];
+    for(let m of this.roomTypeList){
+      roomtype.push({
+        "tabName": m.RoomTypeName,
+        "tabKey": m.RoomTypeCode,
+        "IsActive": false
+      });
+      roomtype[0].IsActive =true;
+    }
+   return roomtype;
   }
 }

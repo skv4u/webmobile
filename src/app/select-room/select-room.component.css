@@ -27,7 +27,7 @@ div.border-bottom {
     height: 0;
     position: relative;
     top: 0px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+    /* box-shadow: 0 0 8px rgba(0, 0, 0, .3); */
 }
 
 div.left {
@@ -78,7 +78,7 @@ div.right {
 }
 
 .tab-default-value {
-    margin: 25px 0px 25px 0px;
+    margin: 0px 0px 25px 0px;
 }
 
 .success-roomnumber {
@@ -97,7 +97,7 @@ div.right {
     padding: 5px;
     margin: 5px;
     display: inline-block;
-    width: 28%;
+    width: 170px;
     font-size: 12px;
     border-radius: 4px;
 }
