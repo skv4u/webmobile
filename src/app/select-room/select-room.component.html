@@ -68,14 +68,32 @@
                 <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
             </div>
 
-            <div class="card-rate center"> Expected Time of Arrival </div>
-            <div class="center">
+            <!-- <div class="card-rate center"> Expected Time of Arrival </div> -->
+            <div class="timebox center">
+                <span>Room1</span>
+                <input id="appt-time" type="time" name="appt-time" value="15:30">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
+            </div>
+            <div class="timebox center">
+                <span>Room2</span>
                 <input id="appt-time" type="time" name="appt-time" value="13:30">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
             </div>
-            <div class="center">
-                <span class="border-bottom left"></span>
-                <span class="border-bottom right"></span>
+            <div class="timebox center">
+                <span>Room3</span>
+                <input id="appt-time" type="time" name="appt-time" value="13:30">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
             </div>
+            <div class="timebox center">
+                <span>Room4</span>
+                <input id="appt-time" type="time" name="appt-time" value="13:30">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
+            </div>
+
 
             <div class="tab-default-value">
                 <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>

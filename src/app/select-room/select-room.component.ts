@@ -11,7 +11,7 @@ import { CommonService } from './../shared/common.service';
 export class SelectRoomComponent implements OnInit {
   isCreateVisible: boolean = true;
   saveSuccess:boolean = true;
-  responseMessage:string = "You have selected Room #";;
+  responseMessage:string = "You have selected Room #";
   isRated: boolean = false;
   error: boolean = false;
   isProcessing: boolean = false;
