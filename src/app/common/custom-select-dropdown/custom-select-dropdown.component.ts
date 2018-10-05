@@ -20,15 +20,7 @@ export class CustomSelectDropdownComponent implements OnInit {
     this.filterSelected();
   }
   listGenerate(){
-    if(!this.chipList.length){
-      this.chipList = [
-        { "key": "Chip1", "text": "Chip1", "active": false },
-        { "key": "Chip2", "text": "Chip2 chip2", "active": false },
-        { "key": "Chip3", "text": "Chip3 chip3 chip3", "active": false },
-        { "key": "Chip4", "text": "Chip4 chip4 chip4", "active": false }
-      ];
-    }
-    else {
+    if(this.chipList.length){     
       for(let m of this.chipList){
         m.active = false;
       }
@@ -51,7 +43,7 @@ export class CustomSelectDropdownComponent implements OnInit {
     this.chipList = this.chipList.filter((v) => {
       return selectedList.indexOf(v.key) == -1
     });
-
+    if(this.chipList.length)
     this.chipList[0].active = true;
   }
   removeItem(chip: any) {

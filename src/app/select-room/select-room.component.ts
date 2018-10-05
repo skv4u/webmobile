@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { CommonService } from './../shared/common.service';
 
+
 @Component({
   selector: 'app-select-room',
   templateUrl: './select-room.component.html',
@@ -45,8 +46,14 @@ export class SelectRoomComponent implements OnInit {
   roomData: any = {};
   queryData: any = {};
   totalRoom:number = 0;
+  arrivalTimingList:any[] = [];
+  masterList:any;
   constructor(private _title: Title, public commonService: CommonService) {
-    this.listHotelData();
+    this.queryData = this.commonService.queryParam(window.top.location.href);   
+    if (this.queryData)
+      this.listHotelData();
+    else
+      this.pageNotFound = true;
   }
   ngOnInit() {
     this._title.setTitle("Choose room of your choice");
@@ -75,32 +82,36 @@ export class SelectRoomComponent implements OnInit {
       }
     )
   }
-  listRoom() {
-    this.queryData.r = 699;
-    this.isProcessing = true;
-    this.commonService.GetMethod("room/" + this.queryData.r, "Config").subscribe(
-      data => {
-        // console.log(data);
-        if (data && data.Data) {
-          this.roomData = data.Data;
-        }
-        // console.log(this.roomData);
-        this.isProcessing = false;
-      }
-    );
-  }
+  // listRoom() {
+  //   this.queryData.r = 699;
+  //   this.isProcessing = true;
+  //   this.commonService.GetMethod("room/" + this.queryData.r, "Config").subscribe(
+  //     data => {
+  //       // console.log(data);
+  //       if (data && data.Data) {
+  //         this.roomData = data.Data;
+  //       }
+  //       // console.log(this.roomData);
+  //       this.isProcessing = false;
+  //     }
+  //   );
+  // }
   saveRoom() {
-    console.log(this.selectedFeatureList);
-    console.log(this.selectedFloorList);
+    // console.log(this.selectedFeatureList);
+    // console.log(this.selectedFloorList);
     this.isCreateVisible =false;
     this.saveSuccess = true;
     this.responseMessage = "You have selected Room #";
+    
   }
   updateParent(elem, type) {
     // console.log(elem)
     // console.log(type)
     if (type == 'feature') {
       this.selectedFeatureList = elem;
+    }
+    else {
+      this.selectedFloorList = elem;
     }
   }
   viewTabDetail(key: string, index: number) {
@@ -109,6 +120,11 @@ export class SelectRoomComponent implements OnInit {
     }
     this.tabs[index].IsActive = true;
     this.currentTab = key;
+    this.isCreateVisible = false;
+    setTimeout(()=>{
+     this.isCreateVisible = true;
+    },20);
+    // this.roomList = this.getRoomList(index);
     // this._title.setTitle(this.hotelData.Name + ' : ' + this.tabs[index].tabName);
   }
   formatMultiSelect(key1:string,key2:string,type:string,data:any){
@@ -129,112 +145,46 @@ export class SelectRoomComponent implements OnInit {
   }
   allApi() {
     let requestJson ={ 
-      "LoginID": "mobiledev@idsnext.com", 
-      "PmsCustCode":20002, 
-      "ReservationNumber":327,
-      "FeatureID":"",
-      "FloorID":"",
-      "RoomType":"DLX"
+      "LoginID": this.queryData.e, 
+      "PmsCustCode":this.queryData.p, 
+      "ReservationNumber":this.queryData.r
     };
     this.isCreateVisible = false;
     this.commonService.PostMethod('CheckIn/PreStayReservationDetailsGET',requestJson).subscribe(
       data=>{
-        console.log(data);
+        this.masterList = data.Response;
         this.isCreateVisible = true;
         this.featureList = this.formatMultiSelect('RoomFeatureID','RoomFeatureName','feature', data.Response.RoomFeatureList);
         this.floorList =  this.formatMultiSelect('FloorID','FloorName','floor',data.Response.RoomFloorList);
-        this.roomList = data.Response.AvailableRoomList;
+       
         this.roomTypeList = data.Response.RoomReferenceList;
+      
         let roomTypes:string[] = this.checkSingleTypeRoom();
         this.isSingle = roomTypes.length == 1;
-        this.totalRoom = this.roomTypeList.length;
+        this.totalRoom = this.roomTypeList.length;  
+        
         if(!this.isSingle){
           this.tabs = this.getTabList();
         }
+        this.arrivalTimingList = this.getTimeList();
+        // this.roomList = this.getRoomList(0);
+        this.roomList = data.Response.AvailableRoomList;
+        this.currentTab = this.tabs[0].tabKey;
+        console.log(this.arrivalTimingList);
       }
     )
-    /*this.roomTypeList = [
-      {
-        "FeatureList": [
-          {
-            "FeatureID": 12,
-            "FeatureCode": "AC1",
-            "FeatureName": "AC - Air Conditioner"
-          },
-          {
-            "FeatureID": 13,
-            "FeatureCode": "AC3",
-            "FeatureName": "AC2 - Air Conditioner"
-          }
-        ],
-        "FloorList": [
-          {
-            "FloorID": 12,
-            "FloorCode": "FIRST",
-            "FloorName": "First-Floor"
-          },
-          {
-            "FloorID": 13,
-            "FloorCode": "Second",
-            "FloorName": "Second-Floor"
-          }
-        ],
-        "AvailableRooms": [
-          {
-            "RoomNumber": "101",
-            "RoomName": "101-Name",
-            "RoomType": "STD",
-            "IsAllocated": false
-          },
-          {
-            "RoomNumber": "102",
-            "RoomName": "102-Name",
-            "RoomType": "DLX",
-            "IsAllocated": false
-          }
-        ]
-      }
-    ];
-    this.featureList = [
-      {
-        "FeatureID": 12,
-        "FeatureCode": "AC1",
-        "FeatureName": "AC - Air Conditioner"
-      },
-      {
-        "FeatureID": 13,
-        "FeatureCode": "AC3",
-        "FeatureName": "AC2 - Air Conditioner"
-      }
-    ];
-    this.floorList = [
-      {
-        "FloorID": 12,
-        "FloorCode": "FIRST",
-        "FloorName": "First-Floor"
-      },
-      {
-        "FloorID": 13,
-        "FloorCode": "Second",
-        "FloorName": "Second-Floor"
-      }
-    ];
-    this.roomList = [
-      {
-        "RoomNumber": "101",
-        "RoomName": "101-Name",
-        "RoomType": "STD",
-        "IsAllocated": false
-      },
-      {
-        "RoomNumber": "102",
-        "RoomName": "102-Name",
-        "RoomType": "DLX",
-        "IsAllocated": false
-      }
-    ];
-    this.featureList = this.formatMultiSelect('FeatureID','FeatureCode','feature');
-    this.floorList =  this.formatMultiSelect('FloorID','FloorCode','floor');*/
+  }
+  getRoomList(tabIndex:number){
+    let roomList:any[] = [];
+    for(let m of this.masterList.AvailableRoomList){
+      if(this.tabs[tabIndex].tabKey == m.RoomType)
+      roomList.push({
+          "RoomNumber": m.ArrivalTime,
+          "RoomName":m.RoomName,
+          "IsAllocated":m.IsAllocated
+        });
+    }
+    return roomList;
   }
   checkSingleTypeRoom(){
     let roomtype:string[] = [];
@@ -243,7 +193,17 @@ export class SelectRoomComponent implements OnInit {
     }
     roomtype = Array.from(new Set(roomtype));
    return roomtype;
-
+  }
+  getTimeList(){
+    
+    let timeList:any[] = [];
+    for(let m of this.roomTypeList){
+      if(this.tabs[0].tabKey == m.RoomTypeCode)
+      timeList.push({
+          "ArrivalTime": m.ArrivalTime
+        });
+    }
+    return timeList;
   }
   getTabList(){
     let roomtype:any[] = [];

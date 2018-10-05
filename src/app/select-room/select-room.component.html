@@ -22,7 +22,8 @@
         <table>
             <tr>
                 <td>Room Type :
-                    <strong>{{roomData.RoomTypeName}}</strong>
+                    <!-- <strong>{{roomData.RoomTypeName}}</strong> -->
+                    <strong *ngFor="let m of tabs; let i=index">{{m.tabName}}{{i==tabs.length-1 ? '':', '}}</strong>
                 </td>
                 <td>Room Count :
                     <strong>{{totalRoom}}</strong>
@@ -43,16 +44,27 @@
     </div>
     <div *ngIf="!isSingle">
         <div class="card" *ngIf="isCreateVisible">
+            <div class="tab-container" *ngIf="tabs.length">
+                <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
+            </div>
+            <div class="card-rate center" *ngIf="arrivalTimingList.length"> Expected Time of Arrival </div>
+
+            <div class="timebox center" *ngFor="let m of arrivalTimingList let i=index">
+                <span>Room {{i+1}}</span>
+                <input type="time" [(ngModel)]="m.ArrivalTime">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
+            </div>
             <div class="card-rate center"> Select Room of Your Choice</div>
             <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
             <div>&nbsp;</div>
             <app-custom-select-dropdown (selectedListParent)="updateParent($event,'floor')" [chipList]="floorList" [selectedList]="selectedFloorList" placeholder="Floor"></app-custom-select-dropdown>
 
             <div class="font11 top10 center">
-                <i class="fa fa-exclamation-circle"></i> Select 1 Room(s)
+                <i class="fa fa-exclamation-circle"></i> Select {{totalRoom}} Room(s)
             </div>
 
-            <div class="select-room" *ngFor="let m of roomList; let i=index" [class.active]="m.IsAllocated" (click)="changeAllocatedRoom(i)">
+            <div *ngFor="let m of roomList; let i=index" class="select-room {{m.RoomType==currentTab?'show':'hide'}}" [class.active]="m.IsAllocated" (click)="changeAllocatedRoom(i)">
                 <div class="image-block">
                     <img src="./assets/images/icons/Vacant.svg">
                 </div>
@@ -64,24 +76,23 @@
     <div *ngIf="isSingle">
         <div class="card" *ngIf="isCreateVisible">
 
-            <div class="tab-container" *ngIf="tabs.length">
-                <a *ngFor="let m of tabs; let i=index" [class.active]="m.IsActive" (click)="viewTabDetail(m.tabKey,i)">{{m.tabName}}</a>
+
+            <div class="card-rate center" *ngIf="roomTypeList.length"> Expected Time of Arrival </div>
+
+            <div class="timebox center" *ngFor="let m of roomTypeList">
+                <span>Room1</span>
+                <input type="time" [(ngModel)]="m.ArrivalTime">
+                <div class="border-bottom left"></div>
+                <div class="border-bottom right"></div>
             </div>
 
-            <div class="card-rate center"> Expected Time of Arrival </div>
-            <div class="timebox center">
-                <span>Room1</span>
-                <input id="appt-time" type="time" name="appt-time" value="15:30">
-                <div class="border-bottom left"></div>
-                <div class="border-bottom right"></div>
-            </div>
-            <div class="timebox center">
+            <!-- <div class="timebox center">
                 <span>Room2</span>
-                <input id="appt-time" type="time" name="appt-time" value="13:30">
+                <input id="appt-time" type="time" name="appt-time" value="03:30">
                 <div class="border-bottom left"></div>
                 <div class="border-bottom right"></div>
-            </div>
-            <div class="timebox center">
+            </div> -->
+            <!-- <div class="timebox center">
                 <span>Room3</span>
                 <input id="appt-time" type="time" name="appt-time" value="13:30">
                 <div class="border-bottom left"></div>
@@ -92,7 +103,7 @@
                 <input id="appt-time" type="time" name="appt-time" value="13:30">
                 <div class="border-bottom left"></div>
                 <div class="border-bottom right"></div>
-            </div>
+            </div> -->
 
             <div class="card-rate center"> Select Room of Your Choice</div>
             <div class="tab-default-value">
