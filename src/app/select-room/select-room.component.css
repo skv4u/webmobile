@@ -2,8 +2,8 @@
     width: 100%;
 }
 
-.card table td:last-child {
-    text-align: right;
+.card table td {
+    vertical-align: top;
 }
 
 input[type="time"] {
@@ -11,10 +11,12 @@ input[type="time"] {
     font-size: 15px;
     font-family: Roboto-Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
     /* text-align: center; */
-    border: none;
+    border: 1px solid #e2e2e2;
     letter-spacing: 5px;
     /* border: 1px solid; */
-    margin-left: 20px;
+    /* margin-left: 20px; */
+    border: none;
+    border-bottom: 1px solid #e2e2e2;
 }
 
 input[type="time"]:focus {
@@ -30,12 +32,8 @@ div.border-bottom {
     /* box-shadow: 0 0 8px rgba(0, 0, 0, .3); */
 }
 
-div.left {
-    left: 27px;
-}
-
 div.right {
-    left: 65px;
+    left: 36px;
     top: -1px;
 }
 
@@ -100,13 +98,13 @@ div.right {
 }
 
 .timebox {
-    border: 1px solid #e2e2e2;
+    /* border-bottom: 1px solid #e2e2e2; */
     padding: 5px;
-    margin: 5px;
+    /* margin: 5px;
     display: inline-block;
-    width: 170px;
+    width: 137px;
     font-size: 12px;
-    border-radius: 4px;
+    border-radius: 4px; */
 }
 
 .show {
@@ -116,3 +114,9 @@ div.right {
 .hide {
     display: none;
 }
+
+
+/* 
+.timebox span {
+    font-size: 12px;
+} */

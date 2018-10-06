@@ -64,7 +64,8 @@ export class CustomSelectDropdownComponent implements OnInit {
     if (this.chipList.length) {
       this.chipList[0].active = true;
     }
-
+    this.valueChanges();
+    
     if (this.outsideClick == undefined)
       this.outsideClick = this.outSideClick();
   }
