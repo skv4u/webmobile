@@ -77,6 +77,7 @@ export class CustomSelectDropdownComponent implements OnInit {
     
   }
   listPosition(elem: any) {
+    // console.log(elem.keyCode);
     if (elem.keyCode == 13) { //Enter key
       if (this.chipList.length) {
         let currentIndex: number = -1;
@@ -99,6 +100,12 @@ export class CustomSelectDropdownComponent implements OnInit {
       if (len == 0 && this.selectedList.length) {
         this.removeItem(this.selectedList[this.selectedList.length - 1]);
       }
+    }
+    else if(elem.keyCode == 27){
+      (<HTMLElement>document.querySelector('.hiddenbtn')).focus();
+
+      this.IsChipListVisibile = false;
+
     }
   }
   moveActive(type: string) {

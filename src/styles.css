@@ -351,3 +351,16 @@ select {
 .left {
     text-align: left;
 }
+
+.show {
+    display: inline-block;
+}
+
+.hide {
+    display: none;
+}
+
+.hiddenbtn {
+    /* visibility: hidden */
+    opacity: 0
+}
