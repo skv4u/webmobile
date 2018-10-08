@@ -1,9 +1,27 @@
-<div class="background-grey"></div>
-<div class="popup-box">
-    <img src="./assets/images/success.png">
+<div *ngIf="type == 'success'">
+    <div class="background-grey"></div>
+    <div class="popup-box">
+        <img src="./assets/images/success.png">
 
-    <div style="margin-top:15px">{{message}}</div>
-    <div class="button top20" style="margin-left: -10px;width: 100%;bottom: 0.8px;">
-        <button (click)="backParent()">OK</button>
+        <div style="margin-top:15px">{{message}}</div>
+        <div class="button top20" style="margin-left: -10px;width: 100%;bottom: 0.8px;">
+            <button (click)="backParent()">OK</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'error'">
+    <div class="background-grey"></div>
+    <div class="popup-box">
+        <div>&nbsp;</div>
+        <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+
+        <div style="margin-top:15px">{{message}}</div>
+        <div class="button top20" style="margin-left: -10px;width: 100%;bottom: 0.8px; ">
+            <button class="error" (click)="backParent()">OK</button>
+        </div>
+
+
+
+
     </div>
 </div>

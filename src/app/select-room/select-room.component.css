@@ -111,3 +111,15 @@ div.right {
 .timebox span {
     font-size: 12px;
 } */
+
+@media only screen and (max-width: 960px) {
+    .container {
+        width: 392px;
+    }
+    .button {
+        width: 370px
+    }
+    .tab-container {
+        width: 350px;
+    }
+}

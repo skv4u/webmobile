@@ -75,6 +75,11 @@ body {
     cursor: pointer;
 }
 
+.button button.error,
+.button1 button.error {
+    background: #ce7e6c;
+}
+
 .center {
     text-align: center
 }
@@ -361,6 +366,7 @@ select {
 }
 
 .hiddenbtn {
-    /* visibility: hidden */
-    opacity: 0
+    opacity: 0;
+    height: 0;
+    display: inherit;
 }

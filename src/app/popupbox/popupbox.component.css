@@ -2,21 +2,25 @@
     background: #000;
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     opacity: 0.4;
     bottom: 0;
 }
 
 .popup-box {
-    height: 140px;
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 280px;
-    position: absolute;
-    top: 25%;
-    z-index: 2;
-    background: #fff;
-    left: 40%;
+    height: 140px;
+    margin: auto;
+    background-color: #fff;
     border-radius: 4px;
     text-align: center;
     padding: 10px;
+    z-index: 10;
 }

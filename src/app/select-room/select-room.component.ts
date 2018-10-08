@@ -11,7 +11,10 @@ import { CommonService } from './../shared/common.service';
 })
 export class SelectRoomComponent implements OnInit {
   isCreateVisible: boolean = false;
-  saveSuccess: boolean = false;
+  // saveSuccess: boolean = false;
+  popupVisibility:boolean = false;
+  popuptype:string = "";
+  reservationType:string = "";
   responseMessage: string = "You have selected Room #";
   isRated: boolean = false;
   error: boolean = false;
@@ -27,17 +30,7 @@ export class SelectRoomComponent implements OnInit {
     "Name": "",
     "Logo": ""
   };
-  /*tabs: any = [{
-    "tabName": "Deluxe",
-    "tabKey": "ServiceRequest",
-    "IsActive": true
-  },
-  {
-    "tabName": "Standard",
-    "tabKey": "Feedback",
-    "IsActive": false
-  }
-  ];*/
+ 
   tabs: any[] = [];
   roomTypeList: any[] = [];
   roomList: any[] = [];
@@ -84,36 +77,19 @@ export class SelectRoomComponent implements OnInit {
       },
       error => {
         this.isProcessing = false;
+        this.reservationType = 'nointernet';
       }
     )
   }
-  // listRoom() {
-  //   this.queryData.r = 699;
-  //   this.isProcessing = true;
-  //   this.commonService.GetMethod("room/" + this.queryData.r, "Config").subscribe(
-  //     data => {
-  //       // console.log(data);
-  //       if (data && data.Data) {
-  //         this.roomData = data.Data;
-  //       }
-  //       // console.log(this.roomData);
-  //       this.isProcessing = false;
-  //     }
-  //   );
-  // }
-getRoomNumber(){
-
-}
+  
   saveRoom() {
-    // console.log(this.roomTypeList);
-    // console.log(this.selectedFloorList);
-    // console.log
+   
     let selectedRoom: any[] = [];
     let sendJson: any[] = [];
     let addedRoomRefList: number[] = [];
     let addedRoomNumber: number[] = [];
     let i = 0;
-    // console.log(this.arrivalTimingList);
+    
     for (let m of this.roomList) {
       if (m.IsAllocated) {
         selectedRoom.push({
@@ -124,7 +100,6 @@ getRoomNumber(){
     }
 
     for(let i=0; i<this.roomTypeList.length; i++){
-      // debugger
       let roomNum:string = "";
       for(let m of selectedRoom){
         if(m.RoomType == this.roomTypeList[i].RoomTypeCode && addedRoomNumber.indexOf(m.RoomNumber) == -1){
@@ -137,63 +112,6 @@ getRoomNumber(){
       this.roomTypeList[i].ArrivalTime = this.arrivalTimingList[i].ArrivalTime;
     }
 
-    // console.log(this.roomTypeList);
-/*
-    for (let x of this.roomTypeList) {
-      if(selectedRoom.length){
-        addedRoomNumber=[];
-        for(let m of selectedRoom){
-          if (m.RoomType == x.RoomTypeCode && addedRoomRefList.indexOf(x.RoomReferenceNumber) == -1 && addedRoomNumber.indexOf(m.RoomNumber) == -1) {
-            sendJson.push(
-              {
-                "RoomReferenceNumber": x.RoomReferenceNumber,
-                "RoomNumber": m.RoomNumber,
-                "ArrivalTime": this.arrivalTimingList[i].ArrivalTime,
-                "RoomType": x.RoomTypeCode
-              });
-          }else if(m.RoomType == x.RoomTypeCode && addedRoomRefList.indexOf(x.RoomReferenceNumber) == -1){
-            sendJson.push(
-              {
-                "RoomReferenceNumber": x.RoomReferenceNumber,
-                "RoomNumber": "",
-                "ArrivalTime": this.arrivalTimingList[i].ArrivalTime,
-                "RoomType": x.RoomTypeCode
-              });
-            
-          }
-          // else if(addedRoomRefList.indexOf(x.RoomReferenceNumber) == -1){
-          //   sendJson.push(
-          //     {
-          //       "RoomReferenceNumber": x.RoomReferenceNumber,
-          //       "RoomNumber": "",
-          //       "ArrivalTime": this.arrivalTimingList[i].ArrivalTime,
-          //       "RoomType": x.RoomTypeCode
-          //     });
-          // }
-          addedRoomNumber.push(m.RoomNumber)
-        }
-        i++;
-      }
-      else {
-        if(addedRoomRefList.indexOf(x.RoomReferenceNumber) == -1)
-        sendJson.push(
-          {
-            "RoomReferenceNumber": x.RoomReferenceNumber,
-            "RoomNumber": "",
-            "ArrivalTime": this.arrivalTimingList[i++].ArrivalTime,
-            "RoomType": x.RoomTypeCode
-          });
-      }
-      
-      addedRoomRefList.push(x.RoomReferenceNumber);
-      // selecteRoom.push({
-      //   "RoomNumber":m.RoomNumber,
-      //   "RoomType":m.RoomType
-      // })
-    }
-    // for(selecteRoom)
-*/
-    // console.log(sendJson);
     let requestJson = {
       "PmsCustCode": this.queryData.p,
       "LoginID": this.queryData.e,
@@ -201,27 +119,34 @@ getRoomNumber(){
       "Instruction": this.feedback,
       "RoomReferenceList": this.roomTypeList
     };
-    console.log(requestJson);
-    if (1) {
-      return
-    }
+    // console.log(requestJson);
+    // if (1) {
+    //   return
+    // }
+    this.isProcessing = true;
     this.commonService.PostMethod('CheckIn/PreStayReservationDetailsPUT', requestJson).subscribe(
       data => {
-
+        if(data.Status == 'Success'){
+          this.allotedRoom = data.Response.AllocatedRoomNumbers;
+          this.responseMessage = this.allotedRoom == '' ? 'Records updated successfully' :  "You have selected Room #"
+        
+          this.reservationType = 'success';
+          
+        }        
         this.isCreateVisible = false;
-        this.saveSuccess = true;
-        this.responseMessage = "You have selected Room #";
-        this.allotedRoom = data.Data.Descrition;
+        this.isProcessing = false;
 
+      },
+      error => {
+        this.isProcessing = false;
+        this.reservationType = '404';
       }
     )
 
 
   }
   updateParent(elem, type) {
-    // console.log(elem)
-    // console.log(type)
-
+    
     if (type == 'feature') {
       this.selectedFeatureList = elem;
     }
@@ -308,7 +233,10 @@ getRoomNumber(){
     if (!this.roomList[index].IsAllocated) {
       let flag: boolean = this.validateRoomSelection();
       if (flag) {
-        alert("You can select only " + this.totalRoom + " Room(s)");
+        this.popupVisibility = true;
+        this.popuptype = 'error';
+        this.responseMessage = "You can select max " + this.totalRoom + " Room(s)"
+        // alert("You can select only " + this.totalRoom + " Room(s)");
         return
       }
     }
@@ -337,7 +265,7 @@ getRoomNumber(){
     };
     // this.isCreateVisible = tr;
 
-    /* temp */
+    /* temp 
     let data: any = {};
     data.Response = { "RoomReferenceList": [{ "RoomTypeCode": "KGS", "RoomReferenceNumber": 180, "RoomTypeName": "Kings Suite", "ArrivalTime": "00:01" }, { "RoomTypeCode": "KGS", "RoomReferenceNumber": 181, "RoomTypeName": "Kings Suite", "ArrivalTime": "04:01" }], "RoomFeatureList": [{ "RoomFeatureID": 41, "RoomFeatureCode": "101", "RoomFeatureName": "Dvd/Cd Players" }, { "RoomFeatureID": 42, "RoomFeatureCode": "100", "RoomFeatureName": "50 Inch Led Screen Tv" }], "RoomFloorList": [{ "FloorID": 32, "FloorCode": "FLR02", "FloorName": "Floor -2" }, { "FloorID": 35, "FloorCode": "FLR01", "FloorName": "Floor - 1" }], "AvailableRoomList": [{ "RoomNumber": "KS1021", "RoomName": "KS1021", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1030", "RoomName": "KS1030", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1033", "RoomName": "KS1033", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1051", "RoomName": "KS1051", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1060", "RoomName": "KS1060", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1065", "RoomName": "KS1065", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1068", "RoomName": "KS1068", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1079", "RoomName": "KS1079", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1082", "RoomName": "KS1082", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1084", "RoomName": "KS1084", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1087", "RoomName": "KS1087", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1088", "RoomName": "KS1088", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1089", "RoomName": "KS1089", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1091", "RoomName": "KS1091", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1092", "RoomName": "KS1092", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1093", "RoomName": "KS1093", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1094", "RoomName": "KS1094", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1096", "RoomName": "KS1096", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1097", "RoomName": "KS1097", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1098", "RoomName": "KS1098", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1099", "RoomName": "KS1099", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "KS1100", "RoomName": "KS1100", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "41,42" }, { "RoomNumber": "TEST1", "RoomName": "TEST1", "RoomType": "KGS", "IsAllocated": false, "FloorID": 35, "RoomFeatureID": "" }] }
     this.isProcessing = false;
@@ -365,7 +293,7 @@ getRoomNumber(){
 
     this.commonService.PostMethod('CheckIn/PreStayReservationDetailsGET', requestJson).subscribe(
       data => {
-        this.isProcessing = false;
+        if(data.Response.RoomReferenceList.length){
         this.isCreateVisible = true;
         this.masterList = data.Response;
         this.featureList = this.formatMultiSelect('RoomFeatureID', 'RoomFeatureName', 'feature', data.Response.RoomFeatureList);
@@ -380,6 +308,12 @@ getRoomNumber(){
 
         this.arrivalTimingList = this.getTimeList();
         this.roomList = this.addViisbilityToRoomsAvailability(data.Response.AvailableRoomList);
+      }else{
+        this.reservationType = 'invalid';
+
+        }
+        this.isProcessing = false;
+        
       },
       error => {
         this.isProcessing = false;
@@ -394,18 +328,7 @@ getRoomNumber(){
     }
     return data;
   }
-  // getRoomList(tabIndex:number){
-  //   let roomList:any[] = [];
-  //   for(let m of this.masterList.AvailableRoomList){
-  //     if(this.tabs[tabIndex].tabKey == m.RoomType)
-  //     roomList.push({
-  //         "RoomNumber": m.ArrivalTime,
-  //         "RoomName":m.RoomName,
-  //         "IsAllocated":m.IsAllocated
-  //       });
-  //   }
-  //   return roomList;
-  // }
+
   checkSingleTypeRoom() {
     let roomtype: any[] = [];
     let list: any[] = [];
@@ -436,21 +359,6 @@ getRoomNumber(){
     }
     return timeList;
   }
-  // getTabList(roomTypeList:any){
-  //   console.log(roomTypeList);
-  //   let roomtype:any[] = [];
-  //   for(let m of roomTypeList){
-  //     roomtype.push({
-  //       "tabName": m.RoomTypeName,
-  //       "tabKey": m.RoomTypeCode,
-  //       "IsActive": false,
-  //       "RoomCount":this.getRoomCount(m.RoomTypeCode)
-
-  //     });
-  //     roomtype[0].IsActive =true;
-  //   }
-  //  return roomtype;
-  // }
   getRoomCount(roomTypeCode: string) {
     let count: number = 0;
     for (let m of this.roomTypeList) {
@@ -460,11 +368,13 @@ getRoomNumber(){
     return count;
   }
   getRoomTypeName(roomTypeCode: string) {
-
     for (let m of this.roomTypeList) {
       if (m.RoomTypeCode == roomTypeCode)
         return m.RoomTypeName
     }
     return "";
+  }
+  pressOk(){
+    this.popupVisibility = false;
   }
 }

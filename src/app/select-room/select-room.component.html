@@ -85,7 +85,8 @@
                 <input type="time" [(ngModel)]="m.ArrivalTime">
             </div>
 
-            <div class="card-rate center"> Select Room of Your Choice <input type="button" class="hiddenbtn"></div>
+            <div class="card-rate center"> Select Room of Your Choice </div>
+            <input type="button" class="hiddenbtn">
             <div class="tab-default-value">
                 <app-custom-select-dropdown (selectedListParent)="updateParent($event,'feature')" [chipList]="featureList" [selectedList]="selectedFeatureList" placeholder="Features"></app-custom-select-dropdown>
                 <div>&nbsp;</div>
@@ -118,7 +119,7 @@
     </div>
 
     <div class="card center" *ngIf="!isCreateVisible && !isProcessing">
-        <div *ngIf="saveSuccess">
+        <div *ngIf="reservationType=='success'">
             <div>&nbsp;</div>
             <img src="./assets/images/success.png">
             <div class="success-msg" style="margin-top: 10px; font-size: 13px;">{{responseMessage}}</div>
@@ -128,7 +129,7 @@
 
             </div>
         </div>
-        <div *ngIf="!saveSuccess">
+        <div *ngIf="reservationType=='occupied'">
             <div>&nbsp;</div>
             <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
             <div class="error-msg" style="margin-top: 10px; font-size: 13px;">
@@ -136,7 +137,32 @@
                 <span class="error-room-number">101, 102</span> has already booked.
                 <br />
                 <br />
-                <a href="#">Click here to try again</a>
+                <a onclick="window.location.reload()">Click here to try again</a>
+            </div>
+
+        </div>
+        <div *ngIf="reservationType=='invalid'">
+            <div>&nbsp;</div>
+            <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+            <div class="error-msg" style="margin-top: 10px; font-size: 13px;">
+                <br />
+                <span class="error-room-number"> Invalid Reservation Number</span>
+            </div>
+        </div>
+        <div *ngIf="reservationType=='404'">
+            <div>&nbsp;</div>
+            <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+            <div class="error-msg" style="margin-top: 10px; font-size: 13px;">
+                <br />
+                <span class="error-room-number"> Internal Server Error</span>
+            </div>
+        </div>
+        <div *ngIf="reservationType=='nointernet'">
+            <div>&nbsp;</div>
+            <i class="fas fa-exclamation-triangle" style="color: #ff0000;font-size: 36px;"></i>
+            <div class="error-msg" style="margin-top: 10px; font-size: 13px;">
+                <br />
+                <span class="error-room-number">Please check your internet connection and try again !!!</span>
             </div>
 
         </div>
@@ -147,4 +173,4 @@
 </div>
 
 
-<!-- <app-popupbox *ngIf="popupVisibility" (back)="backtoNextPage()" [message]="responseMessage"></app-popupbox> -->
+<app-popupbox *ngIf="popupVisibility" (back)="pressOk()" [message]="responseMessage" [type]="popuptype"></app-popupbox>
