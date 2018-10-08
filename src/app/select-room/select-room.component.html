@@ -51,8 +51,8 @@
             </div>
             <div class="card-rate center" *ngIf="arrivalTimingList.length"> Expected Time of Arrival </div>
 
-            <div class="timebox" *ngFor="let m of arrivalTimingList let i=index">
-                <strong>Room {{i+1}} - </strong>
+            <div *ngFor="let m of arrivalTimingList" class="timebox {{m.IsVisible?'':'hide'}}">
+                <strong>Room {{m.Sequence}} - </strong>
                 <input type="time" [(ngModel)]="m.ArrivalTime">
             </div>
             <div class="card-rate center"> Select Room of Your Choice </div>

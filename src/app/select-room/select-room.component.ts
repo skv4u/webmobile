@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 
 import { CommonService } from './../shared/common.service';
 
-
 @Component({
   selector: 'app-select-room',
   templateUrl: './select-room.component.html',
@@ -119,34 +118,25 @@ export class SelectRoomComponent implements OnInit {
       "Instruction": this.feedback,
       "RoomReferenceList": this.roomTypeList
     };
-    // console.log(requestJson);
-    // if (1) {
-    //   return
-    // }
+
     this.isProcessing = true;
     this.commonService.PostMethod('CheckIn/PreStayReservationDetailsPUT', requestJson).subscribe(
       data => {
         if(data.Status == 'Success'){
           this.allotedRoom = data.Response.AllocatedRoomNumbers;
-          this.responseMessage = this.allotedRoom == '' ? 'Records updated successfully' :  "You have selected Room #"
-        
-          this.reservationType = 'success';
-          
+          this.responseMessage = this.allotedRoom == '' ? 'Records updated successfully' :  "You have selected Room #";        
+          this.reservationType = 'success';          
         }        
         this.isCreateVisible = false;
         this.isProcessing = false;
-
       },
       error => {
         this.isProcessing = false;
         this.reservationType = '404';
       }
-    )
-
-
+    );
   }
-  updateParent(elem, type) {
-    
+  updateParent(elem, type) {    
     if (type == 'feature') {
       this.selectedFeatureList = elem;
     }
@@ -206,6 +196,21 @@ export class SelectRoomComponent implements OnInit {
 
     this.currentTab = key;
     this.roomList = this.addViisbilityToRoomsAvailability(this.masterList.AvailableRoomList);
+    
+    // this.arrivalTimingList = this.getTimeList(index);
+    // console.log(this.arrivalTimingList);
+    let i:number = 1;
+    for(let m of this.arrivalTimingList){
+      if(m.RoomType == this.currentTab){
+        m.IsVisible = true;
+        m.Sequence = i++
+      }
+      else {
+        m.IsVisible = false;
+      }
+    }
+   
+
     this.reloadRoom();
     // this.roomList = this.getRoomList(index);
     // this._title.setTitle(this.hotelData.Name + ' : ' + this.tabs[index].tabName);
@@ -306,7 +311,7 @@ export class SelectRoomComponent implements OnInit {
         this.totalRoom = this.tabs[0].RoomCount;
         this.currentTab = this.tabs[0].tabKey;
 
-        this.arrivalTimingList = this.getTimeList();
+        this.arrivalTimingList = this.getTimeList(0);
         this.roomList = this.addViisbilityToRoomsAvailability(data.Response.AvailableRoomList);
       }else{
         this.reservationType = 'invalid';
@@ -348,14 +353,30 @@ export class SelectRoomComponent implements OnInit {
     list[0].IsActive = true;
     return list;
   }
-  getTimeList() {
+  getTimeList(index:number) {
 
     let timeList: any[] = [];
+    let i:number = 1;
     for (let m of this.roomTypeList) {
-      // if(this.tabs[0].tabKey == m.RoomTypeCode)
-      timeList.push({
-        "ArrivalTime": m.ArrivalTime
-      });
+      if(this.tabs[index].tabKey == m.RoomTypeCode){
+        timeList.push({
+          "ArrivalTime": m.ArrivalTime,
+          "IsVisible":true,
+          "RoomType":m.RoomTypeCode,
+          "Sequence": i++
+        });
+
+      }
+      else {
+        timeList.push({
+          "ArrivalTime": m.ArrivalTime,
+          "IsVisible":false,
+          "RoomType":m.RoomTypeCode,
+          "Sequence": 0
+        });
+      }
+      
+     
     }
     return timeList;
   }
