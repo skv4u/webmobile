@@ -137,7 +137,11 @@ export class CustomSelectDropdownComponent implements OnInit {
   }
   outSideClick() {
     return this.renderer.listen('body', 'click', event => {
-      let target = event.target.classList.contains('chips') || event.target.classList.contains('chip-input');
+      // console.log(event.target);
+      let target =  event.target.classList.contains('fa-caret-down') || 
+                    event.target.classList.contains('chips') || 
+                    event.target.classList.contains('chip-input');
+      // console.log(target);
       if (!target) {
         this.IsChipListVisibile = false;
         this.outsideClick();
@@ -148,6 +152,12 @@ export class CustomSelectDropdownComponent implements OnInit {
 
   valueChanges(){
     this.selectedListParent.emit(this.selectedList);
+  }
+  openDropdown(){
+    console.log(this.outsideClick);
+    this.IsChipListVisibile = true;
+    if (this.outsideClick == undefined)
+    this.outsideClick = this.outSideClick();
   }
 
 }

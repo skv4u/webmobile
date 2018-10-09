@@ -14,9 +14,9 @@
         <div class="box2">{{hotelData.FullName}}</div>
     </div>
 
-    <div class="card" *ngIf="isProcessing">
+    <!-- <div class="card" *ngIf="isProcessing">
         <i class="fas fa-spinner fa-spin" style="font-size: 32px;text-align: center;display: block;"></i>
-    </div>
+    </div> -->
 
     <div class="card" *ngIf="isCreateVisible">
         <table>
@@ -113,7 +113,9 @@
 
         </div>
     </div>
-
+    <div class="card" *ngIf="isProcessing">
+        <i class="fas fa-spinner fa-spin" style="font-size: 32px;text-align: center;display: block;"></i>
+    </div>
     <div class="button1 top20" *ngIf="isCreateVisible">
         <button (click)="saveRoom()">Submit</button>
     </div>
@@ -169,6 +171,7 @@
 
 
     </div>
+
 
 </div>
 
